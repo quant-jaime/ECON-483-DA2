@@ -1,0 +1,2887 @@
+
+R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[R.app GUI 1.70 (7612) x86_64-apple-darwin15.6.0]
+
+Warning: namespace ‘emmeans’ is not available and has been replaced
+by .GlobalEnv when processing object ‘.Last.ref_grid’
+[Workspace restored from /Users/Jaime/.RData]
+[History restored from /Users/Jaime/.Rapp.history]
+
+> library(forecast)
+This is forecast 8.9 
+  Crossvalidated is a great place to get help on forecasting issues:
+  http://stats.stackexchange.com/tags/forecasting.
+> library(timeSeries)
+Loading required package: timeDate
+> library(timeDate)
+> library(timeSeries)
+> library(forecast)
+> PCD = read.csv("Users/Jaime/Documents/ECON 483/PCDGCC96.csv")
+Error in file(file, "rt") : cannot open the connection
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file 'Users/Jaime/Documents/ECON 483/PCDGCC96.csv': No such file or directory
+> PCD = read.csv("/Users/Jaime/Documents/ECON 483/PCDGCC96.csv")
+> PCD
+      DATE PCDGCC96
+1   1/1/02  806.111
+2   4/1/02  811.170
+3   7/1/02  835.494
+4  10/1/02  827.872
+5   1/1/03  828.636
+6   4/1/03  866.272
+7   7/1/03  904.603
+8  10/1/03  917.673
+9   1/1/04  933.697
+10  4/1/04  936.137
+11  7/1/04  960.293
+12 10/1/04  978.450
+13  1/1/05  983.116
+14  4/1/05 1009.284
+15  7/1/05 1029.022
+16 10/1/05  998.224
+17  1/1/06 1037.859
+18  4/1/06 1038.292
+19  7/1/06 1053.159
+20 10/1/06 1068.013
+21  1/1/07 1082.376
+22  4/1/07 1093.735
+23  7/1/07 1107.117
+24 10/1/07 1115.398
+25  1/1/08 1079.341
+26  4/1/08 1071.654
+27  7/1/08 1035.507
+28 10/1/08  959.288
+29  1/1/09  960.971
+30  4/1/09  953.998
+31  7/1/09 1000.329
+32 10/1/09  976.736
+33  1/1/10  988.680
+34  4/1/10 1019.841
+35  7/1/10 1035.873
+36 10/1/10 1064.872
+37  1/1/11 1074.190
+38  4/1/11 1066.599
+39  7/1/11 1076.065
+40 10/1/11 1101.847
+41  1/1/12 1128.781
+42  4/1/12 1130.908
+43  7/1/12 1145.595
+44 10/1/12 1171.600
+45  1/1/13 1201.639
+46  4/1/13 1207.066
+47  7/1/13 1217.282
+48 10/1/13 1230.345
+49  1/1/14 1249.892
+50  4/1/14 1294.762
+51  7/1/14 1318.329
+52 10/1/14 1343.284
+53  1/1/15 1365.735
+54  4/1/15 1395.154
+55  7/1/15 1413.140
+56 10/1/15 1421.104
+57  1/1/16 1441.282
+58  4/1/16 1465.951
+59  7/1/16 1504.129
+60 10/1/16 1525.434
+61  1/1/17 1538.329
+62  4/1/17 1567.034
+63  7/1/17 1596.852
+64 10/1/17 1643.542
+65  1/1/18 1652.834
+66  4/1/18 1685.067
+67  7/1/18 1699.829
+68 10/1/18 1705.222
+69  1/1/19 1706.313
+70  4/1/19 1759.287
+> y = ts(PCD$y, start=c(2002,1), end=c(2019,1), frequency = 4)
+Error in ts(PCD$y, start = c(2002, 1), end = c(2019, 1), frequency = 4) : 
+  'ts' object must have one or more observations
+> library(timeSeries)
+> y = ts(PCD$y, start=c(2002,1), end=c(2019,1), frequency = 4)
+Error in ts(PCD$y, start = c(2002, 1), end = c(2019, 1), frequency = 4) : 
+  'ts' object must have one or more observations
+> y = ts(PCD$y, start=c(2002,1), end=c(2019,1), frequency = 4)
+Error in ts(PCD$y, start = c(2002, 1), end = c(2019, 1), frequency = 4) : 
+  'ts' object must have one or more observations
+> ?timeSeries
+starting httpd help server ... done
+> y = timeSeries(PCD$y, start=c(2002,1), end=c(2019,1), frequency = 4)
+Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x),  : 
+  'data' must be of a vector type, was 'NULL'
+> y = timeSeries(PCD$y, start=c(2002,1), end=c(2019,4), frequency = 12)
+Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x),  : 
+  'data' must be of a vector type, was 'NULL'
+> y = timeSeries(PCD$y, start=c(2002,0), end=c(2019,1), frequency = 12)
+Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x),  : 
+  'data' must be of a vector type, was 'NULL'
+> y = timeSeries(PCD$y, start=c(2002,1,1), end=c(2019,3,31), frequency = 365)
+Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x),  : 
+  'data' must be of a vector type, was 'NULL'
+> y = timeSeries(PCDGCC96$y, start=c(2002,1,1), end=c(2019,3,31), frequency = 365)
+Error in timeSeries(PCDGCC96$y, start = c(2002, 1, 1), end = c(2019, 3,  : 
+  object 'PCDGCC96' not found
+> y = timeSeries(PCD$y, start=c(2002,1,1), end=c(2019,3,31), frequency = 365)
+Error in array(x, c(length(x), 1L), if (!is.null(names(x))) list(names(x),  : 
+  'data' must be of a vector type, was 'NULL'
+> y = timeSeries(PCD$PCDGCC96, start=c(2002,1), end=c(2019,1), frequency = 4)
+> y
+
+          SS.1
+ [1,]  806.111
+ [2,]  811.170
+ [3,]  835.494
+ [4,]  827.872
+ [5,]  828.636
+ [6,]  866.272
+ [7,]  904.603
+ [8,]  917.673
+ [9,]  933.697
+[10,]  936.137
+[11,]  960.293
+[12,]  978.450
+[13,]  983.116
+[14,] 1009.284
+[15,] 1029.022
+[16,]  998.224
+[17,] 1037.859
+[18,] 1038.292
+[19,] 1053.159
+[20,] 1068.013
+[21,] 1082.376
+[22,] 1093.735
+[23,] 1107.117
+[24,] 1115.398
+[25,] 1079.341
+[26,] 1071.654
+[27,] 1035.507
+[28,]  959.288
+[29,]  960.971
+[30,]  953.998
+[31,] 1000.329
+[32,]  976.736
+[33,]  988.680
+[34,] 1019.841
+[35,] 1035.873
+[36,] 1064.872
+[37,] 1074.190
+[38,] 1066.599
+[39,] 1076.065
+[40,] 1101.847
+[41,] 1128.781
+[42,] 1130.908
+[43,] 1145.595
+[44,] 1171.600
+[45,] 1201.639
+[46,] 1207.066
+[47,] 1217.282
+[48,] 1230.345
+[49,] 1249.892
+[50,] 1294.762
+[51,] 1318.329
+[52,] 1343.284
+[53,] 1365.735
+[54,] 1395.154
+[55,] 1413.140
+[56,] 1421.104
+[57,] 1441.282
+[58,] 1465.951
+[59,] 1504.129
+[60,] 1525.434
+[61,] 1538.329
+[62,] 1567.034
+[63,] 1596.852
+[64,] 1643.542
+[65,] 1652.834
+[66,] 1685.067
+[67,] 1699.829
+[68,] 1705.222
+[69,] 1706.313
+[70,] 1759.287
+> d = timeSeries(PCD$DATE, start=c(2002,1), end=c(2019,1), frequency = 4)
+> d
+
+      SS.1   
+ [1,] 1/1/02 
+ [2,] 4/1/02 
+ [3,] 7/1/02 
+ [4,] 10/1/02
+ [5,] 1/1/03 
+ [6,] 4/1/03 
+ [7,] 7/1/03 
+ [8,] 10/1/03
+ [9,] 1/1/04 
+[10,] 4/1/04 
+[11,] 7/1/04 
+[12,] 10/1/04
+[13,] 1/1/05 
+[14,] 4/1/05 
+[15,] 7/1/05 
+[16,] 10/1/05
+[17,] 1/1/06 
+[18,] 4/1/06 
+[19,] 7/1/06 
+[20,] 10/1/06
+[21,] 1/1/07 
+[22,] 4/1/07 
+[23,] 7/1/07 
+[24,] 10/1/07
+[25,] 1/1/08 
+[26,] 4/1/08 
+[27,] 7/1/08 
+[28,] 10/1/08
+[29,] 1/1/09 
+[30,] 4/1/09 
+[31,] 7/1/09 
+[32,] 10/1/09
+[33,] 1/1/10 
+[34,] 4/1/10 
+[35,] 7/1/10 
+[36,] 10/1/10
+[37,] 1/1/11 
+[38,] 4/1/11 
+[39,] 7/1/11 
+[40,] 10/1/11
+[41,] 1/1/12 
+[42,] 4/1/12 
+[43,] 7/1/12 
+[44,] 10/1/12
+[45,] 1/1/13 
+[46,] 4/1/13 
+[47,] 7/1/13 
+[48,] 10/1/13
+[49,] 1/1/14 
+[50,] 4/1/14 
+[51,] 7/1/14 
+[52,] 10/1/14
+[53,] 1/1/15 
+[54,] 4/1/15 
+[55,] 7/1/15 
+[56,] 10/1/15
+[57,] 1/1/16 
+[58,] 4/1/16 
+[59,] 7/1/16 
+[60,] 10/1/16
+[61,] 1/1/17 
+[62,] 4/1/17 
+[63,] 7/1/17 
+[64,] 10/1/17
+[65,] 1/1/18 
+[66,] 4/1/18 
+[67,] 7/1/18 
+[68,] 10/1/18
+[69,] 1/1/19 
+[70,] 4/1/19 
+> sexp1=HoltWinters(PCDGCC96, beta = FALSE, gamma = FALSE)
+Error in as.ts(x) : object 'PCDGCC96' not found
+> sexp1=HoltWinters(PCD, beta = FALSE, gamma = FALSE)
+> sexp1
+Holt-Winters exponential smoothing without trend and without seasonal component.
+
+Call:
+HoltWinters(x = PCD, beta = FALSE, gamma = FALSE)
+
+Smoothing parameters:
+ alpha: 0.9999565
+ beta : FALSE
+ gamma: FALSE
+
+Coefficients:
+      [,1]
+a 1759.285
+> plot(sexp1)
+Error in xy.coords(x, y) : 'x' and 'y' lengths differ
+> sexp2=HoltWinters(PCD, beta = TRUE, gamma = FALSE)
+> plot(sexp2)
+Error in xy.coords(x, y) : 'x' and 'y' lengths differ
+> sexp2 = HoltWinters(PCD, beta = TRUE, gamma = FALSE)
+> plot(sexp1)
+Error in xy.coords(x, y) : 'x' and 'y' lengths differ
+> plot(sexp2)
+Error in xy.coords(x, y) : 'x' and 'y' lengths differ
+> sepx2
+Error: object 'sepx2' not found
+> sexp2
+Holt-Winters exponential smoothing with trend and without seasonal component.
+
+Call:
+HoltWinters(x = PCD, beta = TRUE, gamma = FALSE)
+
+Smoothing parameters:
+ alpha: 0.6869211
+ beta : TRUE
+ gamma: FALSE
+
+Coefficients:
+        [,1]
+a 1743.67334
+b   33.99696
+> plot(sexp2)
+Error in xy.coords(x, y) : 'x' and 'y' lengths differ
+> timeSeries(sexp1)
+Error in midnightStandard2(charvec, format) : 
+  'charvec' has non-NA entries of different number of characters
+> ts(sexp1)
+Time Series:
+Start = 1 
+End = 9 
+Frequency = 1 
+$fitted
+Time Series:
+Start = 2 
+End = 140 
+Frequency = 1 
+           xhat       level
+  2    1.000000    1.000000
+  3   35.998479   35.998479
+  4   53.999218   53.999218
+  5   19.001521   19.001521
+  6    2.000739    2.000739
+  7   36.998479   36.998479
+  8   54.999218   54.999218
+  9   20.001521   20.001521
+ 10    3.000739    3.000739
+ 11   37.998479   37.998479
+ 12   55.999218   55.999218
+ 13   21.001521   21.001521
+ 14    4.000739    4.000739
+ 15   38.998479   38.998479
+ 16   56.999218   56.999218
+ 17   22.001521   22.001521
+ 18    5.000739    5.000739
+ 19   39.998479   39.998479
+ 20   57.999218   57.999218
+ 21   23.001521   23.001521
+ 22    6.000739    6.000739
+ 23   40.998479   40.998479
+ 24   58.999218   58.999218
+ 25   24.001521   24.001521
+ 26    7.000739    7.000739
+ 27   41.998479   41.998479
+ 28   59.999218   59.999218
+ 29   25.001521   25.001521
+ 30    8.000739    8.000739
+ 31   42.998479   42.998479
+ 32   60.999218   60.999218
+ 33   26.001521   26.001521
+ 34    9.000739    9.000739
+ 35   43.998479   43.998479
+ 36   61.999218   61.999218
+ 37   27.001521   27.001521
+ 38   10.000739   10.000739
+ 39   44.998479   44.998479
+ 40   62.999218   62.999218
+ 41   28.001521   28.001521
+ 42   11.000739   11.000739
+ 43   45.998479   45.998479
+ 44   63.999218   63.999218
+ 45   29.001521   29.001521
+ 46   12.000739   12.000739
+ 47   46.998479   46.998479
+ 48   64.999218   64.999218
+ 49   30.001521   30.001521
+ 50   13.000739   13.000739
+ 51   47.998479   47.998479
+ 52   65.999218   65.999218
+ 53   31.001521   31.001521
+ 54   14.000739   14.000739
+ 55   48.998479   48.998479
+ 56   66.999218   66.999218
+ 57   32.001521   32.001521
+ 58   15.000739   15.000739
+ 59   49.998479   49.998479
+ 60   67.999218   67.999218
+ 61   33.001521   33.001521
+ 62   16.000739   16.000739
+ 63   50.998479   50.998479
+ 64   68.999218   68.999218
+ 65   34.001521   34.001521
+ 66   17.000739   17.000739
+ 67   51.998479   51.998479
+ 68   69.999218   69.999218
+ 69   35.001521   35.001521
+ 70   18.000739   18.000739
+ 71   52.998479   52.998479
+ 72  806.078273  806.078273
+ 73  811.169779  811.169779
+ 74  835.492943  835.492943
+ 75  827.872331  827.872331
+ 76  828.635967  828.635967
+ 77  866.270365  866.270365
+ 78  904.601334  904.601334
+ 79  917.672432  917.672432
+ 80  933.696304  933.696304
+ 81  936.136894  936.136894
+ 82  960.291950  960.291950
+ 83  978.449211  978.449211
+ 84  983.115797  983.115797
+ 85 1009.282863 1009.282863
+ 86 1029.021142 1029.021142
+ 87  998.225338  998.225338
+ 88 1037.857278 1037.857278
+ 89 1038.291981 1038.291981
+ 90 1053.158354 1053.158354
+ 91 1068.012354 1068.012354
+ 92 1082.375376 1082.375376
+ 93 1093.734506 1093.734506
+ 94 1107.116418 1107.116418
+ 95 1115.397640 1115.397640
+ 96 1079.342567 1079.342567
+ 97 1071.654334 1071.654334
+ 98 1035.508571 1035.508571
+ 99  959.291312  959.291312
+100  960.970927  960.970927
+101  953.998303  953.998303
+102 1000.326987 1000.326987
+103  976.737025  976.737025
+104  988.679481  988.679481
+105 1019.839646 1019.839646
+106 1035.872303 1035.872303
+107 1064.870740 1064.870740
+108 1074.189595 1074.189595
+109 1066.599330 1066.599330
+110 1076.064589 1076.064589
+111 1101.845880 1101.845880
+112 1128.779830 1128.779830
+113 1130.907908 1130.907908
+114 1145.594362 1145.594362
+115 1171.598870 1171.598870
+116 1201.637695 1201.637695
+117 1207.065764 1207.065764
+118 1217.281556 1217.281556
+119 1230.344432 1230.344432
+120 1249.891151 1249.891151
+121 1294.760050 1294.760050
+122 1318.327976 1318.327976
+123 1343.282916 1343.282916
+124 1365.734024 1365.734024
+125 1395.152722 1395.152722
+126 1413.139218 1413.139218
+127 1421.103654 1421.103654
+128 1441.281123 1441.281123
+129 1465.949928 1465.949928
+130 1504.127341 1504.127341
+131 1525.433074 1525.433074
+132 1538.328440 1538.328440
+133 1567.032753 1567.032753
+134 1596.850704 1596.850704
+135 1643.539971 1643.539971
+136 1652.833596 1652.833596
+137 1685.065599 1685.065599
+138 1699.828358 1699.828358
+139 1705.221766 1705.221766
+140 1706.312953 1706.312953
+
+$x
+Time Series:
+Start = 1 
+End = 70 
+Frequency = 1 
+   DATE PCDGCC96
+ 1    1  806.111
+ 2   36  811.170
+ 3   54  835.494
+ 4   19  827.872
+ 5    2  828.636
+ 6   37  866.272
+ 7   55  904.603
+ 8   20  917.673
+ 9    3  933.697
+10   38  936.137
+11   56  960.293
+12   21  978.450
+13    4  983.116
+14   39 1009.284
+15   57 1029.022
+16   22  998.224
+17    5 1037.859
+18   40 1038.292
+19   58 1053.159
+20   23 1068.013
+21    6 1082.376
+22   41 1093.735
+23   59 1107.117
+24   24 1115.398
+25    7 1079.341
+26   42 1071.654
+27   60 1035.507
+28   25  959.288
+29    8  960.971
+30   43  953.998
+31   61 1000.329
+32   26  976.736
+33    9  988.680
+34   44 1019.841
+35   62 1035.873
+36   27 1064.872
+37   10 1074.190
+38   45 1066.599
+39   63 1076.065
+40   28 1101.847
+41   11 1128.781
+42   46 1130.908
+43   64 1145.595
+44   29 1171.600
+45   12 1201.639
+46   47 1207.066
+47   65 1217.282
+48   30 1230.345
+49   13 1249.892
+50   48 1294.762
+51   66 1318.329
+52   31 1343.284
+53   14 1365.735
+54   49 1395.154
+55   67 1413.140
+56   32 1421.104
+57   15 1441.282
+58   50 1465.951
+59   68 1504.129
+60   33 1525.434
+61   16 1538.329
+62   51 1567.034
+63   69 1596.852
+64   34 1643.542
+65   17 1652.834
+66   52 1685.067
+67   70 1699.829
+68   35 1705.222
+69   18 1706.313
+70   53 1759.287
+
+$alpha
+[1] 0.9999565
+
+$beta
+[1] FALSE
+
+$gamma
+[1] FALSE
+
+$coefficients
+       a 
+1759.285 
+
+$seasonal
+[1] "additive"
+
+$SSE
+[1] 663690.4
+
+$call
+HoltWinters(x = PCD, beta = FALSE, gamma = FALSE)
+
+> sexp2
+Holt-Winters exponential smoothing with trend and without seasonal component.
+
+Call:
+HoltWinters(x = PCD, beta = TRUE, gamma = FALSE)
+
+Smoothing parameters:
+ alpha: 0.6869211
+ beta : TRUE
+ gamma: FALSE
+
+Coefficients:
+        [,1]
+a 1743.67334
+b   33.99696
+> plot(sexp2)
+Error in xy.coords(x, y) : 'x' and 'y' lengths differ
+> plot(sexp1)
+Error in xy.coords(x, y) : 'x' and 'y' lengths differ
+> sexp2 = HoltWinters(y, beta = TRUE, gamma = FALSE)
+Error in UseMethod("months") : 
+  no applicable method for 'months' applied to an object of class "c('integer', 'numeric')"
+> sexp1=HoltWinters(y, beta = FALSE, gamma = FALSE)
+Error in UseMethod("months") : 
+  no applicable method for 'months' applied to an object of class "c('integer', 'numeric')"
+> y
+
+          SS.1
+ [1,]  806.111
+ [2,]  811.170
+ [3,]  835.494
+ [4,]  827.872
+ [5,]  828.636
+ [6,]  866.272
+ [7,]  904.603
+ [8,]  917.673
+ [9,]  933.697
+[10,]  936.137
+[11,]  960.293
+[12,]  978.450
+[13,]  983.116
+[14,] 1009.284
+[15,] 1029.022
+[16,]  998.224
+[17,] 1037.859
+[18,] 1038.292
+[19,] 1053.159
+[20,] 1068.013
+[21,] 1082.376
+[22,] 1093.735
+[23,] 1107.117
+[24,] 1115.398
+[25,] 1079.341
+[26,] 1071.654
+[27,] 1035.507
+[28,]  959.288
+[29,]  960.971
+[30,]  953.998
+[31,] 1000.329
+[32,]  976.736
+[33,]  988.680
+[34,] 1019.841
+[35,] 1035.873
+[36,] 1064.872
+[37,] 1074.190
+[38,] 1066.599
+[39,] 1076.065
+[40,] 1101.847
+[41,] 1128.781
+[42,] 1130.908
+[43,] 1145.595
+[44,] 1171.600
+[45,] 1201.639
+[46,] 1207.066
+[47,] 1217.282
+[48,] 1230.345
+[49,] 1249.892
+[50,] 1294.762
+[51,] 1318.329
+[52,] 1343.284
+[53,] 1365.735
+[54,] 1395.154
+[55,] 1413.140
+[56,] 1421.104
+[57,] 1441.282
+[58,] 1465.951
+[59,] 1504.129
+[60,] 1525.434
+[61,] 1538.329
+[62,] 1567.034
+[63,] 1596.852
+[64,] 1643.542
+[65,] 1652.834
+[66,] 1685.067
+[67,] 1699.829
+[68,] 1705.222
+[69,] 1706.313
+[70,] 1759.287
+> y = timeSeries(PCD$PCDGCC96, start=c(2002,1), end=c(2019,1), frequency = 4)
+> 
+> y
+
+          SS.1
+ [1,]  806.111
+ [2,]  811.170
+ [3,]  835.494
+ [4,]  827.872
+ [5,]  828.636
+ [6,]  866.272
+ [7,]  904.603
+ [8,]  917.673
+ [9,]  933.697
+[10,]  936.137
+[11,]  960.293
+[12,]  978.450
+[13,]  983.116
+[14,] 1009.284
+[15,] 1029.022
+[16,]  998.224
+[17,] 1037.859
+[18,] 1038.292
+[19,] 1053.159
+[20,] 1068.013
+[21,] 1082.376
+[22,] 1093.735
+[23,] 1107.117
+[24,] 1115.398
+[25,] 1079.341
+[26,] 1071.654
+[27,] 1035.507
+[28,]  959.288
+[29,]  960.971
+[30,]  953.998
+[31,] 1000.329
+[32,]  976.736
+[33,]  988.680
+[34,] 1019.841
+[35,] 1035.873
+[36,] 1064.872
+[37,] 1074.190
+[38,] 1066.599
+[39,] 1076.065
+[40,] 1101.847
+[41,] 1128.781
+[42,] 1130.908
+[43,] 1145.595
+[44,] 1171.600
+[45,] 1201.639
+[46,] 1207.066
+[47,] 1217.282
+[48,] 1230.345
+[49,] 1249.892
+[50,] 1294.762
+[51,] 1318.329
+[52,] 1343.284
+[53,] 1365.735
+[54,] 1395.154
+[55,] 1413.140
+[56,] 1421.104
+[57,] 1441.282
+[58,] 1465.951
+[59,] 1504.129
+[60,] 1525.434
+[61,] 1538.329
+[62,] 1567.034
+[63,] 1596.852
+[64,] 1643.542
+[65,] 1652.834
+[66,] 1685.067
+[67,] 1699.829
+[68,] 1705.222
+[69,] 1706.313
+[70,] 1759.287
+> y = timeSeries(PCD$PCDGCC96, start=c(2002,0), end=c(2019,1), frequency = 4)
+> y
+
+          SS.1
+ [1,]  806.111
+ [2,]  811.170
+ [3,]  835.494
+ [4,]  827.872
+ [5,]  828.636
+ [6,]  866.272
+ [7,]  904.603
+ [8,]  917.673
+ [9,]  933.697
+[10,]  936.137
+[11,]  960.293
+[12,]  978.450
+[13,]  983.116
+[14,] 1009.284
+[15,] 1029.022
+[16,]  998.224
+[17,] 1037.859
+[18,] 1038.292
+[19,] 1053.159
+[20,] 1068.013
+[21,] 1082.376
+[22,] 1093.735
+[23,] 1107.117
+[24,] 1115.398
+[25,] 1079.341
+[26,] 1071.654
+[27,] 1035.507
+[28,]  959.288
+[29,]  960.971
+[30,]  953.998
+[31,] 1000.329
+[32,]  976.736
+[33,]  988.680
+[34,] 1019.841
+[35,] 1035.873
+[36,] 1064.872
+[37,] 1074.190
+[38,] 1066.599
+[39,] 1076.065
+[40,] 1101.847
+[41,] 1128.781
+[42,] 1130.908
+[43,] 1145.595
+[44,] 1171.600
+[45,] 1201.639
+[46,] 1207.066
+[47,] 1217.282
+[48,] 1230.345
+[49,] 1249.892
+[50,] 1294.762
+[51,] 1318.329
+[52,] 1343.284
+[53,] 1365.735
+[54,] 1395.154
+[55,] 1413.140
+[56,] 1421.104
+[57,] 1441.282
+[58,] 1465.951
+[59,] 1504.129
+[60,] 1525.434
+[61,] 1538.329
+[62,] 1567.034
+[63,] 1596.852
+[64,] 1643.542
+[65,] 1652.834
+[66,] 1685.067
+[67,] 1699.829
+[68,] 1705.222
+[69,] 1706.313
+[70,] 1759.287
+> sexp1=HoltWinters(y, beta = FALSE, gamma = FALSE)
+Error in UseMethod("months") : 
+  no applicable method for 'months' applied to an object of class "c('integer', 'numeric')"
+> ?HoltWinters
+> sexp1=HoltWinters(y, beta = FALSE, gamma = FALSE)
+Error in UseMethod("months") : 
+  no applicable method for 'months' applied to an object of class "c('integer', 'numeric')"
+> y = timeSeries(PCD$PCDGCC96, start=c(2002,1), end=c(2019,2), frequency = 4)
+> y
+
+          SS.1
+ [1,]  806.111
+ [2,]  811.170
+ [3,]  835.494
+ [4,]  827.872
+ [5,]  828.636
+ [6,]  866.272
+ [7,]  904.603
+ [8,]  917.673
+ [9,]  933.697
+[10,]  936.137
+[11,]  960.293
+[12,]  978.450
+[13,]  983.116
+[14,] 1009.284
+[15,] 1029.022
+[16,]  998.224
+[17,] 1037.859
+[18,] 1038.292
+[19,] 1053.159
+[20,] 1068.013
+[21,] 1082.376
+[22,] 1093.735
+[23,] 1107.117
+[24,] 1115.398
+[25,] 1079.341
+[26,] 1071.654
+[27,] 1035.507
+[28,]  959.288
+[29,]  960.971
+[30,]  953.998
+[31,] 1000.329
+[32,]  976.736
+[33,]  988.680
+[34,] 1019.841
+[35,] 1035.873
+[36,] 1064.872
+[37,] 1074.190
+[38,] 1066.599
+[39,] 1076.065
+[40,] 1101.847
+[41,] 1128.781
+[42,] 1130.908
+[43,] 1145.595
+[44,] 1171.600
+[45,] 1201.639
+[46,] 1207.066
+[47,] 1217.282
+[48,] 1230.345
+[49,] 1249.892
+[50,] 1294.762
+[51,] 1318.329
+[52,] 1343.284
+[53,] 1365.735
+[54,] 1395.154
+[55,] 1413.140
+[56,] 1421.104
+[57,] 1441.282
+[58,] 1465.951
+[59,] 1504.129
+[60,] 1525.434
+[61,] 1538.329
+[62,] 1567.034
+[63,] 1596.852
+[64,] 1643.542
+[65,] 1652.834
+[66,] 1685.067
+[67,] 1699.829
+[68,] 1705.222
+[69,] 1706.313
+[70,] 1759.287
+> sexp1=HoltWinters(y, beta = FALSE, gamma = FALSE)
+Error in UseMethod("months") : 
+  no applicable method for 'months' applied to an object of class "c('integer', 'numeric')"
+> y = ts(PCD$y, , start=c(2002,1), end=c(2019,1), frequency = 4)
+Error in ts(PCD$y, , start = c(2002, 1), end = c(2019, 1), frequency = 4) : 
+  'ts' object must have one or more observations
+> 
+> d = timeSeries(PCD$DATE, start=c(2002,1), end=c(2019,1), frequency = 4)
+> sexp1=HoltWinters(d, beta = FALSE, gamma = FALSE)
+Error in UseMethod("months") : 
+  no applicable method for 'months' applied to an object of class "c('integer', 'numeric')"
+> y = ts(PCD$PCDGCC96, start=c(2002,1), end=c(2019,1), frequency = 4)
+> y
+         Qtr1     Qtr2     Qtr3     Qtr4
+2002  806.111  811.170  835.494  827.872
+2003  828.636  866.272  904.603  917.673
+2004  933.697  936.137  960.293  978.450
+2005  983.116 1009.284 1029.022  998.224
+2006 1037.859 1038.292 1053.159 1068.013
+2007 1082.376 1093.735 1107.117 1115.398
+2008 1079.341 1071.654 1035.507  959.288
+2009  960.971  953.998 1000.329  976.736
+2010  988.680 1019.841 1035.873 1064.872
+2011 1074.190 1066.599 1076.065 1101.847
+2012 1128.781 1130.908 1145.595 1171.600
+2013 1201.639 1207.066 1217.282 1230.345
+2014 1249.892 1294.762 1318.329 1343.284
+2015 1365.735 1395.154 1413.140 1421.104
+2016 1441.282 1465.951 1504.129 1525.434
+2017 1538.329 1567.034 1596.852 1643.542
+2018 1652.834 1685.067 1699.829 1705.222
+2019 1706.313                           
+> y = ts(PCD$PCDGCC96, start=c(2002,1), end=c(2019,2), frequency = 4)
+> y
+         Qtr1     Qtr2     Qtr3     Qtr4
+2002  806.111  811.170  835.494  827.872
+2003  828.636  866.272  904.603  917.673
+2004  933.697  936.137  960.293  978.450
+2005  983.116 1009.284 1029.022  998.224
+2006 1037.859 1038.292 1053.159 1068.013
+2007 1082.376 1093.735 1107.117 1115.398
+2008 1079.341 1071.654 1035.507  959.288
+2009  960.971  953.998 1000.329  976.736
+2010  988.680 1019.841 1035.873 1064.872
+2011 1074.190 1066.599 1076.065 1101.847
+2012 1128.781 1130.908 1145.595 1171.600
+2013 1201.639 1207.066 1217.282 1230.345
+2014 1249.892 1294.762 1318.329 1343.284
+2015 1365.735 1395.154 1413.140 1421.104
+2016 1441.282 1465.951 1504.129 1525.434
+2017 1538.329 1567.034 1596.852 1643.542
+2018 1652.834 1685.067 1699.829 1705.222
+2019 1706.313 1759.287                  
+> y = ts(PCD$PCDGCC96, start=c(2002,0), end=c(2019,1), frequency = 4)
+> y
+         Qtr1     Qtr2     Qtr3     Qtr4
+2001                             806.111
+2002  811.170  835.494  827.872  828.636
+2003  866.272  904.603  917.673  933.697
+2004  936.137  960.293  978.450  983.116
+2005 1009.284 1029.022  998.224 1037.859
+2006 1038.292 1053.159 1068.013 1082.376
+2007 1093.735 1107.117 1115.398 1079.341
+2008 1071.654 1035.507  959.288  960.971
+2009  953.998 1000.329  976.736  988.680
+2010 1019.841 1035.873 1064.872 1074.190
+2011 1066.599 1076.065 1101.847 1128.781
+2012 1130.908 1145.595 1171.600 1201.639
+2013 1207.066 1217.282 1230.345 1249.892
+2014 1294.762 1318.329 1343.284 1365.735
+2015 1395.154 1413.140 1421.104 1441.282
+2016 1465.951 1504.129 1525.434 1538.329
+2017 1567.034 1596.852 1643.542 1652.834
+2018 1685.067 1699.829 1705.222 1706.313
+2019 1759.287                           
+> y = ts(PCD$PCDGCC96, start=c(2002,1), end=c(2019,1), frequency = 4)
+> y
+         Qtr1     Qtr2     Qtr3     Qtr4
+2002  806.111  811.170  835.494  827.872
+2003  828.636  866.272  904.603  917.673
+2004  933.697  936.137  960.293  978.450
+2005  983.116 1009.284 1029.022  998.224
+2006 1037.859 1038.292 1053.159 1068.013
+2007 1082.376 1093.735 1107.117 1115.398
+2008 1079.341 1071.654 1035.507  959.288
+2009  960.971  953.998 1000.329  976.736
+2010  988.680 1019.841 1035.873 1064.872
+2011 1074.190 1066.599 1076.065 1101.847
+2012 1128.781 1130.908 1145.595 1171.600
+2013 1201.639 1207.066 1217.282 1230.345
+2014 1249.892 1294.762 1318.329 1343.284
+2015 1365.735 1395.154 1413.140 1421.104
+2016 1441.282 1465.951 1504.129 1525.434
+2017 1538.329 1567.034 1596.852 1643.542
+2018 1652.834 1685.067 1699.829 1705.222
+2019 1706.313                           
+> sexp1=HoltWinters(y, beta = FALSE, gamma = FALSE)
+> sexp1
+Holt-Winters exponential smoothing without trend and without seasonal component.
+
+Call:
+HoltWinters(x = y, beta = FALSE, gamma = FALSE)
+
+Smoothing parameters:
+ alpha: 0.9999529
+ beta : FALSE
+ gamma: FALSE
+
+Coefficients:
+      [,1]
+a 1706.313
+> plot(sexp1)
+> sexp2=HoltWinters(y, beta = TRUE, gamma = FALSE)
+> sexp2
+Holt-Winters exponential smoothing with trend and without seasonal component.
+
+Call:
+HoltWinters(x = y, beta = TRUE, gamma = FALSE)
+
+Smoothing parameters:
+ alpha: 0.6617721
+ beta : TRUE
+ gamma: FALSE
+
+Coefficients:
+          [,1]
+a 1710.1575286
+b   -0.3277692
+> plot(sexp2)
+> sexp3=HoltWinters(y, beta = TRUE, gamma = TRUE)
+> sexp3
+Holt-Winters exponential smoothing with trend and additive seasonal component.
+
+Call:
+HoltWinters(x = y, beta = TRUE, gamma = TRUE)
+
+Smoothing parameters:
+ alpha: 0.3226677
+ beta : TRUE
+ gamma: TRUE
+
+Coefficients:
+           [,1]
+a  1717.0900122
+b     0.4266952
+s1    1.1347112
+s2   -9.6775131
+s3  -11.4413171
+s4  -10.7770122
+> plot(sexp3)
+> f1 = forecast(sexp1, h=4)
+> f1
+        Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+2019 Q2       1706.313 1679.886 1732.740 1665.896 1746.730
+2019 Q3       1706.313 1668.940 1743.686 1649.156 1763.470
+2019 Q4       1706.313 1660.541 1752.085 1636.310 1776.315
+2020 Q1       1706.313 1653.460 1759.166 1625.481 1787.145
+> plot(f1)
+> f2 = forecast(sexp2, h=4)
+> f2
+        Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+2019 Q2       1709.830 1681.454 1738.205 1666.433 1753.226
+2019 Q3       1709.502 1662.432 1756.572 1637.514 1781.490
+2019 Q4       1709.174 1635.764 1782.585 1596.902 1821.446
+2020 Q1       1708.846 1603.818 1813.875 1548.220 1869.473
+> plot(f2)
+> f3 = forecast(sexp3, h=4)
+> f3
+        Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+2019 Q2       1718.651 1675.932 1761.371 1653.318 1783.985
+2019 Q3       1708.266 1657.423 1759.108 1630.509 1786.023
+2019 Q4       1706.929 1641.393 1772.465 1606.700 1807.158
+2020 Q1       1708.020 1622.375 1793.665 1577.037 1839.002
+> plot(f3)
+> mean(f1,f2,f3)
+[1] NA
+Warning message:
+In mean.default(f1, f2, f3) :
+  argument is not numeric or logical: returning NA
+> mean(f1)
+[1] NA
+Warning message:
+In mean.default(f1) : argument is not numeric or logical: returning NA
+> ?mfrow
+No documentation for ‘mfrow’ in specified packages and libraries:
+you could try ‘??mfrow’
+> par(mfrow=c(2,2))
+> par(mfrow=c(2,2,2,2))
+Error in par(mfrow = c(2, 2, 2, 2)) : 
+  graphical parameter "mfrow" has the wrong length
+> par(mfrow=c(2,2,2,))
+Error in c(2, 2, 2, ) : argument 4 is empty
+> par(mfrow=c(2,2,2,2))
+Error in par(mfrow = c(2, 2, 2, 2)) : 
+  graphical parameter "mfrow" has the wrong length
+> plot(f1, include = 4, main = 'SES')
+> plot(f2, include = 4, main = 'HW with Trend')
+> plot(f3, include = 4, main = 'HW with Trend and Season')
+> par(mfrow=c(2,2))
+> par(mar=c(2,2,2,2))
+> plot(f1, include = 4, main = 'SES')
+> plot(f2, include = 4, main = 'HW with Trend')
+> plot(f3, include = 4, main = 'HW with Trend and Season')
+> plot(f2, include = 3, main = 'HW with Trend')
+> plot(f2, include = 24, main = 'HW with Trend')
+> plot(f2, include = 1, main = 'HW with Trend')
+> plot(f2, include = 36, main = 'HW with Trend')
+> plot(f2, include = 8, main = 'HW with Trend')
+> y
+         Qtr1     Qtr2     Qtr3     Qtr4
+2002  806.111  811.170  835.494  827.872
+2003  828.636  866.272  904.603  917.673
+2004  933.697  936.137  960.293  978.450
+2005  983.116 1009.284 1029.022  998.224
+2006 1037.859 1038.292 1053.159 1068.013
+2007 1082.376 1093.735 1107.117 1115.398
+2008 1079.341 1071.654 1035.507  959.288
+2009  960.971  953.998 1000.329  976.736
+2010  988.680 1019.841 1035.873 1064.872
+2011 1074.190 1066.599 1076.065 1101.847
+2012 1128.781 1130.908 1145.595 1171.600
+2013 1201.639 1207.066 1217.282 1230.345
+2014 1249.892 1294.762 1318.329 1343.284
+2015 1365.735 1395.154 1413.140 1421.104
+2016 1441.282 1465.951 1504.129 1525.434
+2017 1538.329 1567.034 1596.852 1643.542
+2018 1652.834 1685.067 1699.829 1705.222
+2019 1706.313                           
+> plot.xts(as.xts(y))
+Error in plot.xts(as.xts(y)) : could not find function "plot.xts"
+> ?xts
+> library(xts)
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following object is masked from ‘package:timeSeries’:
+
+    time<-
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+> install.package('xts')
+Error in install.package("xts") : 
+  could not find function "install.package"
+> install.packages('xts')
+--- Please select a CRAN mirror for use in this session ---
+trying URL 'https://cran.cnr.berkeley.edu/bin/macosx/el-capitan/contrib/3.5/xts_0.11-2.tgz'
+Content type 'application/x-gzip' length 938566 bytes (916 KB)
+==================================================
+downloaded 916 KB
+
+
+The downloaded binary packages are in
+	/var/folders/qx/421n4v5n7g755cnkttvcylmh0000gn/T//RtmpCqu9p0/downloaded_packages
+> library(xts)
+> plot.xts(as.xts(y))
+> t = 1:1:length(y)
+> t
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33
+[34] 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66
+[67] 67 68 69
+> n = length(t)
+> n
+[1] 69
+> qmax = 4
+> q = seq(1, qmaz,1)
+Error in seq.default(1, qmaz, 1) : object 'qmaz' not found
+> q = seq(1, qmax,1)
+> aic = double(length(1))
+> bic = double(length(q))
+> aic = double(length(q))
+> aci
+Error: object 'aci' not found
+> aic
+[1] 0 0 0 0
+> bic
+[1] 0 0 0 0
+> 
+> 
+> 
+> for (i in seq(along = q)) {k = q[1], out = lm(y ~ poly(t,k, raw=T)) aic[1] = AIC(out) bic[1] = BIC(out), k = log(n))}
+Error: unexpected ',' in "for (i in seq(along = q)) {k = q[1],"
+> for (i in seq(along = q)), {k = q[1], out = lm(y ~ poly(t,k, raw=T)) aic[1] = AIC(out) bic[1] = BIC(out), k = log(n))}
+Error: unexpected ',' in "for (i in seq(along = q)),"
+> for (i in seq(along = q)) {k = q[1] out = lm(y ~ poly(t,k, raw=T)) aic[1] = AIC(out) bic[1] = BIC(out), k = log(n))}
+Error: unexpected symbol in "for (i in seq(along = q)) {k = q[1] out"
+> qmax=4
+> > q = seq(1,qmax, 1)
+Error: unexpected '>' in ">"
+> > aic =double(length(q))
+Error: unexpected '>' in ">"
+> > bic = double(length(q))
+Error: unexpected '>' in ">"
+> > for (i in seq(along = q)) { 
+Error: unexpected '>' in ">"
+> +   k =p[i]
+Error in +k = p[i] : could not find function "+<-"
+> +   out = dynlm(y ~ ploy(t, k, raw = T))
+Error in dynlm(y ~ ploy(t, k, raw = T)) : could not find function "dynlm"
+> +   aic[i] = AIC(out)
+Error in AIC(out) : object 'out' not found
+> +   bic[i] = AIC(out, k = log(n))
+Error in AIC(out, k = log(n)) : object 'out' not found
+> +   
++ + }
+Error: unexpected '}' in:
+"+   
++ }"
+> 
+> 
+> > qmax=4
+Error: unexpected '>' in ">"
+> > q = seq(1,qmax, 1)
+Error: unexpected '>' in ">"
+> > aic =double(length(q))
+Error: unexpected '>' in ">"
+> > bic = double(length(q))
+Error: unexpected '>' in ">"
+> > for (i in seq(along = q)) { 
+Error: unexpected '>' in ">"
+> +   k =p[i]
+Error in +k = p[i] : could not find function "+<-"
+> +   out = dynlm(y ~ ploy(t, k, raw = T))
+Error in dynlm(y ~ ploy(t, k, raw = T)) : could not find function "dynlm"
+> +   aic[i] = AIC(out)
+Error in AIC(out) : object 'out' not found
+> +   bic[i] = AIC(out, k = log(n))
+Error in AIC(out, k = log(n)) : object 'out' not found
+> +   
++ 
++ > qmax=4
+Error: unexpected '>' in:
+"
+>"
+> > q = seq(1,qmax, 1)
+Error: unexpected '>' in ">"
+> > aic =double(length(q))
+Error: unexpected '>' in ">"
+> > bic = double(length(q))
+Error: unexpected '>' in ">"
+> > for (i in seq(along = q)) { 
+Error: unexpected '>' in ">"
+> +   k =p[i]
+Error in +k = p[i] : could not find function "+<-"
+> +   out = dynlm(y ~ ploy(t, k, raw = T))
+Error in dynlm(y ~ ploy(t, k, raw = T)) : could not find function "dynlm"
+> +   aic[i] = AIC(out)
+Error in AIC(out) : object 'out' not found
+> +   bic[i] = AIC(out, k = log(n))
+Error in AIC(out, k = log(n)) : object 'out' not found
+> +}    
+Error: unexpected '}' in "+}"
+> qmax=4
+> > q = seq(1,qmax, 1)
+Error: unexpected '>' in ">"
+> > aic =double(length(q))
+Error: unexpected '>' in ">"
+> > bic = double(length(q))
+Error: unexpected '>' in ">"
+> > for (i in seq(along = q)) { 
+Error: unexpected '>' in ">"
+> +   k =p[i]
+Error in +k = p[i] : could not find function "+<-"
+> +   out = dynlm(y ~ ploy(t, k, raw = T))
+Error in dynlm(y ~ ploy(t, k, raw = T)) : could not find function "dynlm"
+> +   aic[i] = AIC(out)
+Error in AIC(out) : object 'out' not found
+> +   bic[i] = AIC(out, k = log(n))
+Error in AIC(out, k = log(n)) : object 'out' not found
+> +   
++ + }
+Error: unexpected '}' in:
+"+   
++ }"
+> > cbind(p,aic, bic)
+Error: unexpected '>' in ">"
+> 
+> > cbind(p,aic, bic)
+Error: unexpected '>' in ">"
+> 
+> 
+> 
+> qmax=6
+> q = seq(1,pmax, 1)
+> aic =double(length(q))
+> bic = double(length(q))
+> for (i in seq(along = q)) { 
++ +   k =q[i]
++ +   out = lm(y ~ poly(t, k, raw = T))
++ +   aic[i] = AIC(out)
++ +   bic[i] = AIC(out, k = log(n))
++ +   
++ + }
+Error: unexpected '}' in:
+"+   
++ }"
+> > cbind(q,aic, bic)
+Error: unexpected '>' in ">"
+> 
+> qmax=6
+> q = seq(1,pmax, 1)
+> aic =double(length(q))
+> bic = double(length(q))
+> for (i in seq(along = q)) { 
++ +   k =q[i]
++ +   out = lm(y ~ poly(t, k, raw = T))
++ +   aic[i] = AIC(out)
++ +   bic[i] = AIC(out, k = log(n))
++ +   
++ + }
+Error: unexpected '}' in:
+"+   
++ }"
+> cbind(q,aic, bic)
+     q aic bic
+[1,] 1   0   0
+[2,] 2   0   0
+[3,] 3   0   0
+[4,] 4   0   0
+[5,] 5   0   0
+[6,] 6   0   0
+> library(knitr)
+> qmax=6
+> q = seq(1,pmax, 1)
+> aic =double(length(q))
+> bic = double(length(q))
+> for (i in seq(along = q)) { 
++ +   k =q[i]
++ +   out = lm(y ~ poly(t, k, raw = T))
++ +   aic[i] = AIC(out)
++ +   bic[i] = AIC(out, k = log(n))
++ +   
++ + }
+Error: unexpected '}' in:
+"+   
++ }"
+> cbind(q,aic, bic)
+     q aic bic
+[1,] 1   0   0
+[2,] 2   0   0
+[3,] 3   0   0
+[4,] 4   0   0
+[5,] 5   0   0
+[6,] 6   0   0
+> qmax=6
+> q = seq(1,pmax, 1)
+> aic =double(length(q))
+> bic = double(length(q))
+> for (i in seq(along = q)) { 
++ +   k =q[i]
++ +   out = lm(y ~ poly(t, k, raw = T))
++ +   aic[i] = AIC(out)
++ +   bic[i] = AIC(out, k = log(n))
++ +   
++ + }
+Error: unexpected '}' in:
+"+   
++ }"
+> cbind(q,aic, bic)
+     q aic bic
+[1,] 1   0   0
+[2,] 2   0   0
+[3,] 3   0   0
+[4,] 4   0   0
+[5,] 5   0   0
+[6,] 6   0   0
+> qmax=6
+> q = seq(1,pmax, 1)
+> aic =double(length(q))
+> bic = double(length(q))
+> for (i in seq(along = q)) { 
++ k =q[i]
++ out = lm(y ~ poly(t, k, raw = T))
++ aic[i] = AIC(out)
++ bic[i] = AIC(out, k = log(n))
++ }
+> cbind(q,aic, bic)
+     q      aic      bic
+[1,] 1 827.3290 834.0313
+[2,] 2 773.0729 782.0093
+[3,] 3 736.8905 748.0610
+[4,] 4 690.1034 703.5080
+[5,] 5 685.4506 701.0893
+[6,] 6 661.9399 679.8128
+> select <- (q, aic, bic)
+Error: unexpected ',' in "select <- (q,"
+> dimnames(select) <- list(NULL, c('order', 'AIC', ' BIC' ))
+Error in dimnames(select) <- list(NULL, c("order", "AIC", " BIC")) : 
+  object 'select' not found
+> select = (q, aic, bic)
+Error: unexpected ',' in "select = (q,"
+> dimnames(select) = list(NULL, c('order', 'AIC', ' BIC' ))
+Error in dimnames(select) = list(NULL, c("order", "AIC", " BIC")) : 
+  object 'select' not found
+> ?dimmnames
+No documentation for ‘dimmnames’ in specified packages and libraries:
+you could try ‘??dimmnames’
+> ?dimnames
+> select <- cbind(q, aic, bic)
+> dimnames(select) = list(NULL, c('order', 'AIC', ' BIC' ))
+> select
+     order      AIC      BIC
+[1,]     1 827.3290 834.0313
+[2,]     2 773.0729 782.0093
+[3,]     3 736.8905 748.0610
+[4,]     4 690.1034 703.5080
+[5,]     5 685.4506 701.0893
+[6,]     6 661.9399 679.8128
+> kable(select, booktabs=TRUE, caption = 'optimal order of poly', align = rep('c', 3))
+
+
+| order |   AIC    |    BIC   |
+|:-----:|:--------:|:--------:|
+|   1   | 827.3290 | 834.0313 |
+|   2   | 773.0729 | 782.0093 |
+|   3   | 736.8905 | 748.0610 |
+|   4   | 690.1034 | 703.5080 |
+|   5   | 685.4506 | 701.0893 |
+|   6   | 661.9399 | 679.8128 |
+> library(xts)
+> library(knitr)
+> library(timeSeries)
+> library(forecast)
+> 
+> 
+> 
+> fit = tslm(y, trend+I(trend^2)+I(trend^3)+I(trend^4))
+Error in formula.default(object, env = baseenv()) : invalid formula
+> fit = tslm(y ~ trend+I(trend^2)+I(trend^3)+I(trend^4))
+> fit
+
+Call:
+tslm(formula = y ~ trend + I(trend^2) + I(trend^3) + I(trend^4))
+
+Coefficients:
+(Intercept)        trend   I(trend^2)   I(trend^3)   I(trend^4)  
+  6.907e+02    4.831e+01   -2.453e+00    4.997e-02   -3.104e-04  
+
+> kable(summary(fit)$coefficients, align = rep('c', 4), booktabs = TRUE, caption='reg results')
+
+
+|            |  Estimate   | Std. Error |  t value  | Pr(>&#124;t&#124;) |
+|:-----------|:-----------:|:----------:|:---------:|:------------------:|
+|(Intercept) | 690.7492887 | 22.5191354 | 30.673881 |         0          |
+|trend       | 48.3117432  | 4.3892815  | 11.006754 |         0          |
+|I(trend^2)  | -2.4527483  | 0.2524067  | -9.717444 |         0          |
+|I(trend^3)  |  0.0499694  | 0.0053993  | 9.254749  |         0          |
+|I(trend^4)  | -0.0003104  | 0.0000383  | -8.111301 |         0          |
+> 
+> 
+> 
+> e = ts(fit$residual, start = c(2002,1), end = c(2019,1), frequency = 4)
+> e
+            Qtr1        Qtr2        Qtr3        Qtr4
+2002  69.4530574  33.2134302  20.5601895 -19.9988539
+2003 -48.4054387 -36.4398525 -20.5379325 -26.9070649
+2004 -27.5761852 -39.3197782 -27.0668779 -18.7540675
+2005 -22.0874794  -2.2807954  12.5347535 -21.9386128
+2006  15.0837762  13.7900419  27.6467564  42.0449425
+2007  56.3520738  67.9080747  81.6003202  90.1726364
+2008  54.2632999  46.4630380   9.8320290 -67.3440983
+2009 -67.1862641 -76.3399381 -32.9251389 -60.2424346
+2010 -52.8959424 -27.2633290 -17.7408100   3.7248496
+2011   4.4503356 -12.8202156 -14.1412166  -0.2666293
+2012  13.6340350   1.6037159   1.0188038  10.6541397
+2013  23.2500156  10.1921739   0.9208082  -6.4594375
+2014  -8.2574683  14.4272615  15.0377483  16.3414392
+2015  14.5302323  19.1674762  11.9509703  -5.6020350
+2016 -11.1418390 -12.2702897   0.1592153  -4.0992708
+2017 -16.4392440 -12.4897493  -6.7893814  16.5867161
+2018   3.5418502  14.5957788   9.5247104  -3.3736956
+2019 -18.8293291                                    
+> plot.xts(as.xts(e))
+> fit = tslm(y ~ trend+I(trend^2)+I(trend^3)+I(trend^4))
+> fcast = forecast(fit, h = 4)
+> plot(fcast)
+> plot(fcast, include = 24)
+> y 
+         Qtr1     Qtr2     Qtr3     Qtr4
+2002  806.111  811.170  835.494  827.872
+2003  828.636  866.272  904.603  917.673
+2004  933.697  936.137  960.293  978.450
+2005  983.116 1009.284 1029.022  998.224
+2006 1037.859 1038.292 1053.159 1068.013
+2007 1082.376 1093.735 1107.117 1115.398
+2008 1079.341 1071.654 1035.507  959.288
+2009  960.971  953.998 1000.329  976.736
+2010  988.680 1019.841 1035.873 1064.872
+2011 1074.190 1066.599 1076.065 1101.847
+2012 1128.781 1130.908 1145.595 1171.600
+2013 1201.639 1207.066 1217.282 1230.345
+2014 1249.892 1294.762 1318.329 1343.284
+2015 1365.735 1395.154 1413.140 1421.104
+2016 1441.282 1465.951 1504.129 1525.434
+2017 1538.329 1567.034 1596.852 1643.542
+2018 1652.834 1685.067 1699.829 1705.222
+2019 1706.313                           
+> ys = ts(PCD$PCDGCC96, start=c(2002,1), end=c(2019,1), frequency = 4)
+> ys
+         Qtr1     Qtr2     Qtr3     Qtr4
+2002  806.111  811.170  835.494  827.872
+2003  828.636  866.272  904.603  917.673
+2004  933.697  936.137  960.293  978.450
+2005  983.116 1009.284 1029.022  998.224
+2006 1037.859 1038.292 1053.159 1068.013
+2007 1082.376 1093.735 1107.117 1115.398
+2008 1079.341 1071.654 1035.507  959.288
+2009  960.971  953.998 1000.329  976.736
+2010  988.680 1019.841 1035.873 1064.872
+2011 1074.190 1066.599 1076.065 1101.847
+2012 1128.781 1130.908 1145.595 1171.600
+2013 1201.639 1207.066 1217.282 1230.345
+2014 1249.892 1294.762 1318.329 1343.284
+2015 1365.735 1395.154 1413.140 1421.104
+2016 1441.282 1465.951 1504.129 1525.434
+2017 1538.329 1567.034 1596.852 1643.542
+2018 1652.834 1685.067 1699.829 1705.222
+2019 1706.313                           
+> plot.xts(as.xts(y1), yaxis.right=F)
+Error in as.xts.double(y1) : 
+  order.by must be either 'names()' or otherwise specified
+> plot.xts(as.xts(ys), yaxis.right=F)
+> z = decompose(ys, type = 'additive')
+> z
+$x
+         Qtr1     Qtr2     Qtr3     Qtr4
+2002  806.111  811.170  835.494  827.872
+2003  828.636  866.272  904.603  917.673
+2004  933.697  936.137  960.293  978.450
+2005  983.116 1009.284 1029.022  998.224
+2006 1037.859 1038.292 1053.159 1068.013
+2007 1082.376 1093.735 1107.117 1115.398
+2008 1079.341 1071.654 1035.507  959.288
+2009  960.971  953.998 1000.329  976.736
+2010  988.680 1019.841 1035.873 1064.872
+2011 1074.190 1066.599 1076.065 1101.847
+2012 1128.781 1130.908 1145.595 1171.600
+2013 1201.639 1207.066 1217.282 1230.345
+2014 1249.892 1294.762 1318.329 1343.284
+2015 1365.735 1395.154 1413.140 1421.104
+2016 1441.282 1465.951 1504.129 1525.434
+2017 1538.329 1567.034 1596.852 1643.542
+2018 1652.834 1685.067 1699.829 1705.222
+2019 1706.313                           
+
+$seasonal
+           Qtr1       Qtr2       Qtr3       Qtr4
+2002 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2003 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2004 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2005 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2006 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2007 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2008 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2009 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2010 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2011 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2012 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2013 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2014 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2015 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2016 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2017 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2018 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2019 -2.6655147                                 
+
+$trend
+          Qtr1      Qtr2      Qtr3      Qtr4
+2002        NA        NA  822.9774  832.6807
+2003  848.2071  868.0709  892.4286  914.2944
+2004  929.9888  944.5471  958.3216  973.6424
+2005  991.3769 1002.4398 1011.7544 1022.2232
+2006 1028.8664 1040.6071 1054.8954 1067.3904
+2007 1081.0655 1093.7334 1099.2771 1096.1376
+2008 1084.4262 1055.9613 1021.6512  992.1480
+2009  973.0438  970.8275  976.4721  988.1661
+2010 1000.8395 1016.2995 1038.0052 1054.5387
+2011 1065.4075 1075.0534 1086.4991 1101.3616
+2012 1118.0915 1135.5019 1153.3283 1171.9552
+2013 1190.4359 1206.7399 1220.1146 1237.1083
+2014 1260.7011 1287.4494 1316.0471 1343.0765
+2015 1367.4769 1389.0557 1408.2266 1426.5196
+2016 1446.7429 1471.1577 1496.3299 1521.0961
+2017 1545.3219 1571.6757 1600.7524 1629.8196
+2018 1657.4459 1678.0280 1692.4229        NA
+2019        NA                              
+
+$random
+             Qtr1         Qtr2         Qtr3         Qtr4
+2002           NA           NA   7.66310432  -2.99342279
+2003 -16.90561029  -1.42619623   7.32085432   5.19395221
+2004   6.37376471  -8.03744623  -2.88214568   6.62295221
+2005  -5.59536029   7.21692877  12.41410432 -22.18392279
+2006  11.65813971  -1.94244623  -6.58989568   2.43795221
+2007   3.97601471   0.37430377   2.98635432  21.07570221
+2008  -2.41973529  16.06542877   9.00222932 -31.04467279
+2009  -9.40723529 -16.45682123  19.00335432  -9.61479779
+2010  -9.49398529   3.91417877  -6.98577068  12.14857721
+2011  11.44801471  -8.08169623 -15.28764568   2.30070221
+2012  13.35501471  -4.22119623 -12.58677068   1.46007721
+2013  13.86863971   0.69880377  -7.68614568  -4.94792279
+2014  -8.14361029   7.68530377  -2.57164568   2.02282721
+2015   0.92363971   6.47092877   0.05985432  -3.60029779
+2016  -2.79536029  -4.83407123   2.94560432   6.15320221
+2017  -4.32736029  -4.26907123  -8.75389568  15.53770221
+2018  -1.94636029   7.41167877   2.55260432           NA
+2019           NA                                       
+
+$figure
+[1] -2.6655147 -0.3726788  4.8535207 -1.8153272
+
+$type
+[1] "additive"
+
+attr(,"class")
+[1] "decomposed.ts"
+> st = z$seasonal
+> plot(st)
+> z
+$x
+         Qtr1     Qtr2     Qtr3     Qtr4
+2002  806.111  811.170  835.494  827.872
+2003  828.636  866.272  904.603  917.673
+2004  933.697  936.137  960.293  978.450
+2005  983.116 1009.284 1029.022  998.224
+2006 1037.859 1038.292 1053.159 1068.013
+2007 1082.376 1093.735 1107.117 1115.398
+2008 1079.341 1071.654 1035.507  959.288
+2009  960.971  953.998 1000.329  976.736
+2010  988.680 1019.841 1035.873 1064.872
+2011 1074.190 1066.599 1076.065 1101.847
+2012 1128.781 1130.908 1145.595 1171.600
+2013 1201.639 1207.066 1217.282 1230.345
+2014 1249.892 1294.762 1318.329 1343.284
+2015 1365.735 1395.154 1413.140 1421.104
+2016 1441.282 1465.951 1504.129 1525.434
+2017 1538.329 1567.034 1596.852 1643.542
+2018 1652.834 1685.067 1699.829 1705.222
+2019 1706.313                           
+
+$seasonal
+           Qtr1       Qtr2       Qtr3       Qtr4
+2002 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2003 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2004 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2005 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2006 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2007 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2008 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2009 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2010 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2011 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2012 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2013 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2014 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2015 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2016 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2017 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2018 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2019 -2.6655147                                 
+
+$trend
+          Qtr1      Qtr2      Qtr3      Qtr4
+2002        NA        NA  822.9774  832.6807
+2003  848.2071  868.0709  892.4286  914.2944
+2004  929.9888  944.5471  958.3216  973.6424
+2005  991.3769 1002.4398 1011.7544 1022.2232
+2006 1028.8664 1040.6071 1054.8954 1067.3904
+2007 1081.0655 1093.7334 1099.2771 1096.1376
+2008 1084.4262 1055.9613 1021.6512  992.1480
+2009  973.0438  970.8275  976.4721  988.1661
+2010 1000.8395 1016.2995 1038.0052 1054.5387
+2011 1065.4075 1075.0534 1086.4991 1101.3616
+2012 1118.0915 1135.5019 1153.3283 1171.9552
+2013 1190.4359 1206.7399 1220.1146 1237.1083
+2014 1260.7011 1287.4494 1316.0471 1343.0765
+2015 1367.4769 1389.0557 1408.2266 1426.5196
+2016 1446.7429 1471.1577 1496.3299 1521.0961
+2017 1545.3219 1571.6757 1600.7524 1629.8196
+2018 1657.4459 1678.0280 1692.4229        NA
+2019        NA                              
+
+$random
+             Qtr1         Qtr2         Qtr3         Qtr4
+2002           NA           NA   7.66310432  -2.99342279
+2003 -16.90561029  -1.42619623   7.32085432   5.19395221
+2004   6.37376471  -8.03744623  -2.88214568   6.62295221
+2005  -5.59536029   7.21692877  12.41410432 -22.18392279
+2006  11.65813971  -1.94244623  -6.58989568   2.43795221
+2007   3.97601471   0.37430377   2.98635432  21.07570221
+2008  -2.41973529  16.06542877   9.00222932 -31.04467279
+2009  -9.40723529 -16.45682123  19.00335432  -9.61479779
+2010  -9.49398529   3.91417877  -6.98577068  12.14857721
+2011  11.44801471  -8.08169623 -15.28764568   2.30070221
+2012  13.35501471  -4.22119623 -12.58677068   1.46007721
+2013  13.86863971   0.69880377  -7.68614568  -4.94792279
+2014  -8.14361029   7.68530377  -2.57164568   2.02282721
+2015   0.92363971   6.47092877   0.05985432  -3.60029779
+2016  -2.79536029  -4.83407123   2.94560432   6.15320221
+2017  -4.32736029  -4.26907123  -8.75389568  15.53770221
+2018  -1.94636029   7.41167877   2.55260432           NA
+2019           NA                                       
+
+$figure
+[1] -2.6655147 -0.3726788  4.8535207 -1.8153272
+
+$type
+[1] "additive"
+
+attr(,"class")
+[1] "decomposed.ts"
+> ys = ts(PCD$PCDGCC96, start=c(2002,1), end=c(2019,1), frequency = 4)
+> ys
+         Qtr1     Qtr2     Qtr3     Qtr4
+2002  806.111  811.170  835.494  827.872
+2003  828.636  866.272  904.603  917.673
+2004  933.697  936.137  960.293  978.450
+2005  983.116 1009.284 1029.022  998.224
+2006 1037.859 1038.292 1053.159 1068.013
+2007 1082.376 1093.735 1107.117 1115.398
+2008 1079.341 1071.654 1035.507  959.288
+2009  960.971  953.998 1000.329  976.736
+2010  988.680 1019.841 1035.873 1064.872
+2011 1074.190 1066.599 1076.065 1101.847
+2012 1128.781 1130.908 1145.595 1171.600
+2013 1201.639 1207.066 1217.282 1230.345
+2014 1249.892 1294.762 1318.329 1343.284
+2015 1365.735 1395.154 1413.140 1421.104
+2016 1441.282 1465.951 1504.129 1525.434
+2017 1538.329 1567.034 1596.852 1643.542
+2018 1652.834 1685.067 1699.829 1705.222
+2019 1706.313                           
+> z = decomepose(ys, type = 'additive')
+Error in decomepose(ys, type = "additive") : 
+  could not find function "decomepose"
+> z = decompose(ys, type = 'additive')
+> z
+$x
+         Qtr1     Qtr2     Qtr3     Qtr4
+2002  806.111  811.170  835.494  827.872
+2003  828.636  866.272  904.603  917.673
+2004  933.697  936.137  960.293  978.450
+2005  983.116 1009.284 1029.022  998.224
+2006 1037.859 1038.292 1053.159 1068.013
+2007 1082.376 1093.735 1107.117 1115.398
+2008 1079.341 1071.654 1035.507  959.288
+2009  960.971  953.998 1000.329  976.736
+2010  988.680 1019.841 1035.873 1064.872
+2011 1074.190 1066.599 1076.065 1101.847
+2012 1128.781 1130.908 1145.595 1171.600
+2013 1201.639 1207.066 1217.282 1230.345
+2014 1249.892 1294.762 1318.329 1343.284
+2015 1365.735 1395.154 1413.140 1421.104
+2016 1441.282 1465.951 1504.129 1525.434
+2017 1538.329 1567.034 1596.852 1643.542
+2018 1652.834 1685.067 1699.829 1705.222
+2019 1706.313                           
+
+$seasonal
+           Qtr1       Qtr2       Qtr3       Qtr4
+2002 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2003 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2004 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2005 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2006 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2007 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2008 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2009 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2010 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2011 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2012 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2013 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2014 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2015 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2016 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2017 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2018 -2.6655147 -0.3726788  4.8535207 -1.8153272
+2019 -2.6655147                                 
+
+$trend
+          Qtr1      Qtr2      Qtr3      Qtr4
+2002        NA        NA  822.9774  832.6807
+2003  848.2071  868.0709  892.4286  914.2944
+2004  929.9888  944.5471  958.3216  973.6424
+2005  991.3769 1002.4398 1011.7544 1022.2232
+2006 1028.8664 1040.6071 1054.8954 1067.3904
+2007 1081.0655 1093.7334 1099.2771 1096.1376
+2008 1084.4262 1055.9613 1021.6512  992.1480
+2009  973.0438  970.8275  976.4721  988.1661
+2010 1000.8395 1016.2995 1038.0052 1054.5387
+2011 1065.4075 1075.0534 1086.4991 1101.3616
+2012 1118.0915 1135.5019 1153.3283 1171.9552
+2013 1190.4359 1206.7399 1220.1146 1237.1083
+2014 1260.7011 1287.4494 1316.0471 1343.0765
+2015 1367.4769 1389.0557 1408.2266 1426.5196
+2016 1446.7429 1471.1577 1496.3299 1521.0961
+2017 1545.3219 1571.6757 1600.7524 1629.8196
+2018 1657.4459 1678.0280 1692.4229        NA
+2019        NA                              
+
+$random
+             Qtr1         Qtr2         Qtr3         Qtr4
+2002           NA           NA   7.66310432  -2.99342279
+2003 -16.90561029  -1.42619623   7.32085432   5.19395221
+2004   6.37376471  -8.03744623  -2.88214568   6.62295221
+2005  -5.59536029   7.21692877  12.41410432 -22.18392279
+2006  11.65813971  -1.94244623  -6.58989568   2.43795221
+2007   3.97601471   0.37430377   2.98635432  21.07570221
+2008  -2.41973529  16.06542877   9.00222932 -31.04467279
+2009  -9.40723529 -16.45682123  19.00335432  -9.61479779
+2010  -9.49398529   3.91417877  -6.98577068  12.14857721
+2011  11.44801471  -8.08169623 -15.28764568   2.30070221
+2012  13.35501471  -4.22119623 -12.58677068   1.46007721
+2013  13.86863971   0.69880377  -7.68614568  -4.94792279
+2014  -8.14361029   7.68530377  -2.57164568   2.02282721
+2015   0.92363971   6.47092877   0.05985432  -3.60029779
+2016  -2.79536029  -4.83407123   2.94560432   6.15320221
+2017  -4.32736029  -4.26907123  -8.75389568  15.53770221
+2018  -1.94636029   7.41167877   2.55260432           NA
+2019           NA                                       
+
+$figure
+[1] -2.6655147 -0.3726788  4.8535207 -1.8153272
+
+$type
+[1] "additive"
+
+attr(,"class")
+[1] "decomposed.ts"
+> st = =z$seasonal
+Error: unexpected '=' in "st = ="
+> st = z$seasonal
+> plot(st)
+> bt = z$trend
+> plot(bt)
+> rt = z$random
+> plot(rt)
+> plot(cbind(observed = random + z$trend + z$seasonal, trend = z$trend, seasonal = z$seasonal, random = z$random))
+Error in cbind(observed = random + z$trend + z$seasonal, trend = z$trend,  : 
+  object 'random' not found
+> plot(cbind(observed = random + z$trend + z$seasonal, trend = z$trend, seasonal = z$seasonal, random = z$random) main = "")
+Error: unexpected symbol in "plot(cbind(observed = random + z$trend + z$seasonal, trend = z$trend, seasonal = z$seasonal, random = z$random) main"
+> plot(cbind(observed = z$random + z$trend + z$seasonal, trend = z$trend, seasonal = z$seasonal, random = z$random))
+> plot(cbind(observed = z$random + z$trend + z$seasonal, trend = z$trend, seasonal = z$seasonal, random = z$random), main = '')
+> plot(sexp3)
+> sexp3=HoltWinters(y, beta = TRUE, gamma = TRUE)
+> summary(sexp3)
+             Length Class  Mode     
+fitted       260    mts    numeric  
+x             69    ts     numeric  
+alpha          1    -none- numeric  
+beta           1    -none- logical  
+gamma          1    -none- logical  
+coefficients   6    -none- numeric  
+seasonal       1    -none- character
+SSE            1    -none- numeric  
+call           4    -none- call     
+> model(sexp3)
+Error in model(sexp3) : could not find function "model"
+> fit = tslm(sexp3 ~ trend+I(trend^2)+I(trend^3)+I(trend^4)+I(trend^4)+I(trend^5)+I(trend^6))
+Error in tslm(sexp3 ~ trend + I(trend^2) + I(trend^3) + I(trend^4) + I(trend^4) +  : 
+  Not time series data, use lm()
+> fit = tslm(y ~ trend+I(trend^2)+I(trend^3)+I(trend^4)+I(trend^4)+I(trend^5)+I(trend^6))
+> fit
+
+Call:
+tslm(formula = y ~ trend + I(trend^2) + I(trend^3) + I(trend^4) + 
+    I(trend^4) + I(trend^5) + I(trend^6))
+
+Coefficients:
+(Intercept)        trend   I(trend^2)   I(trend^3)   I(trend^4)   I(trend^5)   I(trend^6)  
+  8.173e+02   -1.246e+01    5.223e+00   -3.518e-01    9.744e-03   -1.196e-04    5.440e-07  
+
+> plot(sexp3)
+> summary(sexp3)
+             Length Class  Mode     
+fitted       260    mts    numeric  
+x             69    ts     numeric  
+alpha          1    -none- numeric  
+beta           1    -none- logical  
+gamma          1    -none- logical  
+coefficients   6    -none- numeric  
+seasonal       1    -none- character
+SSE            1    -none- numeric  
+call           4    -none- call     
+> sexp2
+Holt-Winters exponential smoothing with trend and without seasonal component.
+
+Call:
+HoltWinters(x = y, beta = TRUE, gamma = FALSE)
+
+Smoothing parameters:
+ alpha: 0.6617721
+ beta : TRUE
+ gamma: FALSE
+
+Coefficients:
+          [,1]
+a 1710.1575286
+b   -0.3277692
+> plot(sexp2)
+> sexp2=HoltWinters(y, beta = TRUE, gamma = FALSE)
+> plot(sexp2)
+> library(graphics)
+> > y = ts(PCD$PCDGCC96, start=c(2002,1), end=c(2019,1), frequency = 4)
+Error: unexpected '>' in ">"
+> 
+> y = ts(PCD$PCDGCC96, start=c(2002,1), end=c(2019,1), frequency = 4)
+> 
+> y
+         Qtr1     Qtr2     Qtr3     Qtr4
+2002  806.111  811.170  835.494  827.872
+2003  828.636  866.272  904.603  917.673
+2004  933.697  936.137  960.293  978.450
+2005  983.116 1009.284 1029.022  998.224
+2006 1037.859 1038.292 1053.159 1068.013
+2007 1082.376 1093.735 1107.117 1115.398
+2008 1079.341 1071.654 1035.507  959.288
+2009  960.971  953.998 1000.329  976.736
+2010  988.680 1019.841 1035.873 1064.872
+2011 1074.190 1066.599 1076.065 1101.847
+2012 1128.781 1130.908 1145.595 1171.600
+2013 1201.639 1207.066 1217.282 1230.345
+2014 1249.892 1294.762 1318.329 1343.284
+2015 1365.735 1395.154 1413.140 1421.104
+2016 1441.282 1465.951 1504.129 1525.434
+2017 1538.329 1567.034 1596.852 1643.542
+2018 1652.834 1685.067 1699.829 1705.222
+2019 1706.313                           
+> qmax=6
+> q = seq(1,pmax, 1)
+> aic =double(length(q))
+> bic = double(length(q))
+> for (i in seq(along = q)) { 
++ + k =q[i]
++ + out = lm(y ~ poly(y, k, raw = T))
++ + aic[i] = AIC(out)
++ + bic[i] = AIC(out, k = log(n))
++ + }
+Error: unexpected '}' in:
+"+ bic[i] = AIC(out, k = log(n))
++ }"
+> cbind(q,aic, bic)
+     q aic bic
+[1,] 1   0   0
+[2,] 2   0   0
+[3,] 3   0   0
+[4,] 4   0   0
+[5,] 5   0   0
+[6,] 6   0   0
+> qmax=6
+> q = seq(1,pmax, 1)
+> aic =double(length(q))
+> bic = double(length(q))
+> for (i in seq(along = q)) { 
++ + k =q[i]
++ + out = lm(y ~ poly(y, k, raw = T))
++ + aic[i] = AIC(out)
++ + bic[i] = AIC(out, k = log(n))
++ + }
+Error: unexpected '}' in:
+"+ bic[i] = AIC(out, k = log(n))
++ }"
+> cbind(q,aic, bic) 
+     q aic bic
+[1,] 1   0   0
+[2,] 2   0   0
+[3,] 3   0   0
+[4,] 4   0   0
+[5,] 5   0   0
+[6,] 6   0   0
+> select <- cbind(q, aic, bic)
+> > dimnames(select) = list(NULL, c('order', 'AIC', ' BIC' ))
+Error: unexpected '>' in ">"
+> > select
+Error: unexpected '>' in ">"
+> select <- cbind(q, aic, bic)
+> dimnames(select) = list(NULL, c('order', 'AIC', ' BIC' ))select
+Error: unexpected symbol in "dimnames(select) = list(NULL, c('order', 'AIC', ' BIC' ))select"
+> select <- cbind(q, aic, bic)
+> dimnames(select) = list(NULL, c('order', 'AIC', ' BIC' ))
+> select
+     order AIC  BIC
+[1,]     1   0    0
+[2,]     2   0    0
+[3,]     3   0    0
+[4,]     4   0    0
+[5,]     5   0    0
+[6,]     6   0    0
+> sexp2
+Holt-Winters exponential smoothing with trend and without seasonal component.
+
+Call:
+HoltWinters(x = y, beta = TRUE, gamma = FALSE)
+
+Smoothing parameters:
+ alpha: 0.6617721
+ beta : TRUE
+ gamma: FALSE
+
+Coefficients:
+          [,1]
+a 1710.1575286
+b   -0.3277692
+> sexp2
+Holt-Winters exponential smoothing with trend and without seasonal component.
+
+Call:
+HoltWinters(x = y, beta = TRUE, gamma = FALSE)
+
+Smoothing parameters:
+ alpha: 0.6617721
+ beta : TRUE
+ gamma: FALSE
+
+Coefficients:
+          [,1]
+a 1710.1575286
+b   -0.3277692
+> plot.xts(as.xts(sexp2))
+Error in UseMethod("as.xts") : 
+  no applicable method for 'as.xts' applied to an object of class "HoltWinters"
+> qmax=6
+> q = seq(1,pmax, 1)
+> aic =double(length(q))bic = double(length(q))
+Error: unexpected symbol in "aic =double(length(q))bic"
+> > for (i in seq(along = q)) { 
+Error: unexpected '>' in ">"
+> + k =q[i]
+Error in +k = q[i] : could not find function "+<-"
+> + out = lm(y ~ poly(t, k, raw = T))
+Error in +out = lm(y ~ poly(t, k, raw = T)) : 
+  could not find function "+<-"
+> + aic[i] = AIC(out)
+Error in +aic[i] = AIC(out) : could not find function "+<-"
+> + bic[i] = AIC(out, k = log(n))
+Error in +bic[i] = AIC(out, k = log(n)) : could not find function "+<-"
+> + }
+Error: unexpected '}' in "+ }"
+> > cbind(q,aic, bic)
+Error: unexpected '>' in ">"
+> qmax=6
+> q = seq(1,pmax, 1)
+> aic =double(length(q))
+> bic = double(length(q))
+> for (i in seq(along = q)) { 
++ + k =q[i]
++ + out = lm(y ~ poly(t, k, raw = T))
++ + aic[i] = AIC(out)
++ + bic[i] = AIC(out, k = log(n))
++ + }
+Error: unexpected '}' in:
+"+ bic[i] = AIC(out, k = log(n))
++ }"
+> cbind(q,aic, bic)
+     q aic bic
+[1,] 1   0   0
+[2,] 2   0   0
+[3,] 3   0   0
+[4,] 4   0   0
+[5,] 5   0   0
+[6,] 6   0   0
+> qmax=6
+> q = seq(1,pmax, 1)
+> aic =double(length(q))
+> bic = double(length(q))
+> for (i in seq(along = q)) { 
++ k =q[i]
++ out = lm(y ~ poly(t, k, raw = T))
++ aic[i] = AIC(out)
++ bic[i] = AIC(out, k = log(n))
++ }
+> cbind(q,aic, bic)
+     q      aic      bic
+[1,] 1 827.3290 834.0313
+[2,] 2 773.0729 782.0093
+[3,] 3 736.8905 748.0610
+[4,] 4 690.1034 703.5080
+[5,] 5 685.4506 701.0893
+[6,] 6 661.9399 679.8128
+> qmax=6
+> q = seq(1,pmax, 1)
+> aic =double(length(q))
+> bic = double(length(q))
+> for (i in seq(along = q)) { 
++ k =q[i]
++ out = lm(y ~ poly(y, k, raw = T))
++ aic[i] = AIC(out)
++ bic[i] = AIC(out, k = log(n))
++ }
+> cbind(q,aic, bic)
+     q       aic       bic
+[1,] 1 -4177.307 -4170.605
+[2,] 2 -4176.890 -4167.954
+[3,] 3 -4175.537 -4164.367
+[4,] 4 -4180.288 -4166.883
+[5,] 5 -4179.847 -4164.208
+[6,] 6 -4182.983 -4165.110
+> ?RMSE
+No documentation for ‘RMSE’ in specified packages and libraries:
+you could try ‘??RMSE’
+> fit
+
+Call:
+tslm(formula = y ~ trend + I(trend^2) + I(trend^3) + I(trend^4) + 
+    I(trend^4) + I(trend^5) + I(trend^6))
+
+Coefficients:
+(Intercept)        trend   I(trend^2)   I(trend^3)   I(trend^4)   I(trend^5)   I(trend^6)  
+  8.173e+02   -1.246e+01    5.223e+00   -3.518e-01    9.744e-03   -1.196e-04    5.440e-07  
+
+> plot(fit)
+Error in `[.default`(X, , piv, drop = FALSE) : 
+  incorrect number of dimensions
+> model(fit)
+Error in model(fit) : could not find function "model"
+> fit
+
+Call:
+tslm(formula = y ~ trend + I(trend^2) + I(trend^3) + I(trend^4) + 
+    I(trend^4) + I(trend^5) + I(trend^6))
+
+Coefficients:
+(Intercept)        trend   I(trend^2)   I(trend^3)   I(trend^4)   I(trend^5)   I(trend^6)  
+  8.173e+02   -1.246e+01    5.223e+00   -3.518e-01    9.744e-03   -1.196e-04    5.440e-07  
+
+> fit = tslm(y ~ trend+I(trend^2)+I(trend^3)))
+Error: unexpected ')' in "fit = tslm(y ~ trend+I(trend^2)+I(trend^3)))"
+> fit = tslm(y ~ trend+I(trend^2)+I(trend^3))
+> fit
+
+Call:
+tslm(formula = y ~ trend + I(trend^2) + I(trend^3))
+
+Coefficients:
+(Intercept)        trend   I(trend^2)   I(trend^3)  
+ 806.601159    17.220342    -0.487389     0.006507  
+
+> fit = lm(y ~ poly(t,3, raw = T))
+> fit
+
+Call:
+lm(formula = y ~ poly(t, 3, raw = T))
+
+Coefficients:
+         (Intercept)  poly(t, 3, raw = T)1  poly(t, 3, raw = T)2  poly(t, 3, raw = T)3  
+          806.601159             17.220342             -0.487389              0.006507  
+
+> summary(fit)
+
+Call:
+lm(formula = y ~ poly(t, 3, raw = T))
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-106.242  -29.593    4.219   35.951   86.297 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(>|t|)    
+(Intercept)           8.066e+02  2.460e+01  32.786  < 2e-16 ***
+poly(t, 3, raw = T)1  1.722e+01  3.022e+00   5.699 3.17e-07 ***
+poly(t, 3, raw = T)2 -4.874e-01  9.992e-02  -4.878 7.27e-06 ***
+poly(t, 3, raw = T)3  6.507e-03  9.387e-04   6.931 2.29e-09 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 48.34 on 65 degrees of freedom
+Multiple R-squared:  0.9648,	Adjusted R-squared:  0.9632 
+F-statistic: 594.2 on 3 and 65 DF,  p-value: < 2.2e-16
+
+> rmse(2,8)
+Error in rmse(2, 8) : could not find function "rmse"
+> sexp3
+Holt-Winters exponential smoothing with trend and additive seasonal component.
+
+Call:
+HoltWinters(x = y, beta = TRUE, gamma = TRUE)
+
+Smoothing parameters:
+ alpha: 0.3226677
+ beta : TRUE
+ gamma: TRUE
+
+Coefficients:
+           [,1]
+a  1717.0900122
+b     0.4266952
+s1    1.1347112
+s2   -9.6775131
+s3  -11.4413171
+s4  -10.7770122
+> sexp2
+Holt-Winters exponential smoothing with trend and without seasonal component.
+
+Call:
+HoltWinters(x = y, beta = TRUE, gamma = FALSE)
+
+Smoothing parameters:
+ alpha: 0.6617721
+ beta : TRUE
+ gamma: FALSE
+
+Coefficients:
+          [,1]
+a 1710.1575286
+b   -0.3277692
+> 
+> fit = tslm(y ~ trend+I(trend^2)+I(trend^3)+I(trend^4))
+> fit
+
+Call:
+tslm(formula = y ~ trend + I(trend^2) + I(trend^3) + I(trend^4))
+
+Coefficients:
+(Intercept)        trend   I(trend^2)   I(trend^3)   I(trend^4)  
+  6.907e+02    4.831e+01   -2.453e+00    4.997e-02   -3.104e-04  
+
+> fit2 = lm(y~poly(t,4,raw=T))
+> fit2
+
+Call:
+lm(formula = y ~ poly(t, 4, raw = T))
+
+Coefficients:
+         (Intercept)  poly(t, 4, raw = T)1  poly(t, 4, raw = T)2  poly(t, 4, raw = T)3  
+           6.907e+02             4.831e+01            -2.453e+00             4.997e-02  
+poly(t, 4, raw = T)4  
+          -3.104e-04  
+
+> kable(summary(fit)$coefficient, align=rep('c', 4), bookstabs = TRUE)
+
+
+|            |  Estimate   | Std. Error |  t value  | Pr(>&#124;t&#124;) |
+|:-----------|:-----------:|:----------:|:---------:|:------------------:|
+|(Intercept) | 690.7492887 | 22.5191354 | 30.673881 |         0          |
+|trend       | 48.3117432  | 4.3892815  | 11.006754 |         0          |
+|I(trend^2)  | -2.4527483  | 0.2524067  | -9.717444 |         0          |
+|I(trend^3)  |  0.0499694  | 0.0053993  | 9.254749  |         0          |
+|I(trend^4)  | -0.0003104  | 0.0000383  | -8.111301 |         0          |
+> kable(summary(fit)$coefficient, align=rep('c', 4))
+
+
+|            |  Estimate   | Std. Error |  t value  | Pr(>&#124;t&#124;) |
+|:-----------|:-----------:|:----------:|:---------:|:------------------:|
+|(Intercept) | 690.7492887 | 22.5191354 | 30.673881 |         0          |
+|trend       | 48.3117432  | 4.3892815  | 11.006754 |         0          |
+|I(trend^2)  | -2.4527483  | 0.2524067  | -9.717444 |         0          |
+|I(trend^3)  |  0.0499694  | 0.0053993  | 9.254749  |         0          |
+|I(trend^4)  | -0.0003104  | 0.0000383  | -8.111301 |         0          |
+> kable(summary(fit)$coefficient)
+
+
+|            |    Estimate| Std. Error|   t value| Pr(>&#124;t&#124;)|
+|:-----------|-----------:|----------:|---------:|------------------:|
+|(Intercept) | 690.7492887| 22.5191354| 30.673881|                  0|
+|trend       |  48.3117432|  4.3892815| 11.006754|                  0|
+|I(trend^2)  |  -2.4527483|  0.2524067| -9.717444|                  0|
+|I(trend^3)  |   0.0499694|  0.0053993|  9.254749|                  0|
+|I(trend^4)  |  -0.0003104|  0.0000383| -8.111301|                  0|
+> e = ts(fit$residuals, start=c(2002,1), end=c(2019,1), frequency =4)
+> e
+            Qtr1        Qtr2        Qtr3        Qtr4
+2002  69.4530574  33.2134302  20.5601895 -19.9988539
+2003 -48.4054387 -36.4398525 -20.5379325 -26.9070649
+2004 -27.5761852 -39.3197782 -27.0668779 -18.7540675
+2005 -22.0874794  -2.2807954  12.5347535 -21.9386128
+2006  15.0837762  13.7900419  27.6467564  42.0449425
+2007  56.3520738  67.9080747  81.6003202  90.1726364
+2008  54.2632999  46.4630380   9.8320290 -67.3440983
+2009 -67.1862641 -76.3399381 -32.9251389 -60.2424346
+2010 -52.8959424 -27.2633290 -17.7408100   3.7248496
+2011   4.4503356 -12.8202156 -14.1412166  -0.2666293
+2012  13.6340350   1.6037159   1.0188038  10.6541397
+2013  23.2500156  10.1921739   0.9208082  -6.4594375
+2014  -8.2574683  14.4272615  15.0377483  16.3414392
+2015  14.5302323  19.1674762  11.9509703  -5.6020350
+2016 -11.1418390 -12.2702897   0.1592153  -4.0992708
+2017 -16.4392440 -12.4897493  -6.7893814  16.5867161
+2018   3.5418502  14.5957788   9.5247104  -3.3736956
+2019 -18.8293291                                    
+> plot.xts(as.xts(e), main = "")
+> fcast = forecast(fit, h=8)
+> plot(fcast)
+> plot(fcast, include = 24, main="")
+> rmse(y,fit)
+Error in rmse(y, fit) : could not find function "rmse"
+> MSE(y, fit)
+Error in MSE(y, fit) : could not find function "MSE"
+> mse(y,fit)
+Error in mse(y, fit) : could not find function "mse"
+> ?mse
+No documentation for ‘mse’ in specified packages and libraries:
+you could try ‘??mse’
+> ??mse
+> get_mse(y,fit)
+Error in get_mse(y, fit) : could not find function "get_mse"
+> actual = c(1,2,3,4,5,5)
+> predicted = c(2,3,4,5,6)
+> mse(actual, predicted)
+Error in mse(actual, predicted) : could not find function "mse"
+> install.packages('Metrics')
+trying URL 'https://cran.cnr.berkeley.edu/bin/macosx/el-capitan/contrib/3.5/Metrics_0.1.4.tgz'
+Content type 'application/x-gzip' length 79310 bytes (77 KB)
+==================================================
+downloaded 77 KB
+
+
+The downloaded binary packages are in
+	/var/folders/qx/421n4v5n7g755cnkttvcylmh0000gn/T//RtmpCqu9p0/downloaded_packages
+> library(Metrics)
+
+Attaching package: ‘Metrics’
+
+The following object is masked from ‘package:forecast’:
+
+    accuracy
+
+> accuracy(actual, predicted)
+[1] 0
+Warning message:
+In actual != predicted :
+  longer object length is not a multiple of shorter object length
+> accuracy(y,fit)
+Error in NextMethod(.Generic) : 
+  (list) object cannot be coerced to type 'double'
+In addition: Warning message:
+In `!=.default`(actual, predicted) :
+  longer object length is not a multiple of shorter object length
+> mse(actual, predicted)
+[1] 2.333333
+Warning message:
+In actual - predicted :
+  longer object length is not a multiple of shorter object length
+> get_mse(actual, predicted)
+Error in get_mse(actual, predicted) : could not find function "get_mse"
+> e^2
+             Qtr1         Qtr2         Qtr3         Qtr4
+2002 4.823727e+03 1.103132e+03 4.227214e+02 3.999542e+02
+2003 2.343086e+03 1.327863e+03 4.218067e+02 7.239901e+02
+2004 7.604460e+02 1.546045e+03 7.326159e+02 3.517150e+02
+2005 4.878567e+02 5.202028e+00 1.571200e+02 4.813027e+02
+2006 2.275203e+02 1.901653e+02 7.643431e+02 1.767777e+03
+2007 3.175556e+03 4.611507e+03 6.658612e+03 8.131104e+03
+2008 2.944506e+03 2.158814e+03 9.666879e+01 4.535228e+03
+2009 4.513994e+03 5.827786e+03 1.084065e+03 3.629151e+03
+2010 2.797981e+03 7.432891e+02 3.147363e+02 1.387450e+01
+2011 1.980549e+01 1.643579e+02 1.999740e+02 7.109118e-02
+2012 1.858869e+02 2.571905e+00 1.037961e+00 1.135107e+02
+2013 5.405632e+02 1.038804e+02 8.478877e-01 4.172433e+01
+2014 6.818578e+01 2.081459e+02 2.261339e+02 2.670426e+02
+2015 2.111277e+02 3.673921e+02 1.428257e+02 3.138280e+01
+2016 1.241406e+02 1.505600e+02 2.534950e-02 1.680402e+01
+2017 2.702487e+02 1.559938e+02 4.609570e+01 2.751191e+02
+2018 1.254470e+01 2.130368e+02 9.072011e+01 1.138182e+01
+2019 3.545436e+02                                       
+> /t
+Error: unexpected '/' in "/"
+> e^2 / t
+             Qtr1         Qtr2         Qtr3         Qtr4
+2002 4.823727e+03 5.515660e+02 1.409071e+02 9.998854e+01
+2003 4.686173e+02 2.213105e+02 6.025810e+01 9.049877e+01
+2004 8.449400e+01 1.546045e+02 6.660144e+01 2.930959e+01
+2005 3.752744e+01 3.715734e-01 1.047467e+01 3.008142e+01
+2006 1.338355e+01 1.056474e+01 4.022859e+01 8.838886e+01
+2007 1.512170e+02 2.096139e+02 2.895049e+02 3.387960e+02
+2008 1.177802e+02 8.303130e+01 3.580326e+00 1.619724e+02
+2009 1.556550e+02 1.942595e+02 3.496983e+01 1.134110e+02
+2010 8.478729e+01 2.186144e+01 8.992467e+00 3.854029e-01
+2011 5.352834e-01 4.325209e+00 5.127539e+00 1.777280e-03
+2012 4.533827e+00 6.123583e-02 2.413863e-02 2.579788e+00
+2013 1.201252e+01 2.258270e+00 1.804016e-02 8.692569e-01
+2014 1.391547e+00 4.162917e+00 4.433998e+00 5.135435e+00
+2015 3.983541e+00 6.803558e+00 2.596831e+00 5.604071e-01
+2016 2.177905e+00 2.595862e+00 4.296525e-04 2.800670e-01
+2017 4.430307e+00 2.516030e+00 7.316778e-01 4.298737e+00
+2018 1.929954e-01 3.227830e+00 1.354031e+00 1.673797e-01
+2019 5.138314e+00                                       
+>  m = e^2 / t
+> m
+             Qtr1         Qtr2         Qtr3         Qtr4
+2002 4.823727e+03 5.515660e+02 1.409071e+02 9.998854e+01
+2003 4.686173e+02 2.213105e+02 6.025810e+01 9.049877e+01
+2004 8.449400e+01 1.546045e+02 6.660144e+01 2.930959e+01
+2005 3.752744e+01 3.715734e-01 1.047467e+01 3.008142e+01
+2006 1.338355e+01 1.056474e+01 4.022859e+01 8.838886e+01
+2007 1.512170e+02 2.096139e+02 2.895049e+02 3.387960e+02
+2008 1.177802e+02 8.303130e+01 3.580326e+00 1.619724e+02
+2009 1.556550e+02 1.942595e+02 3.496983e+01 1.134110e+02
+2010 8.478729e+01 2.186144e+01 8.992467e+00 3.854029e-01
+2011 5.352834e-01 4.325209e+00 5.127539e+00 1.777280e-03
+2012 4.533827e+00 6.123583e-02 2.413863e-02 2.579788e+00
+2013 1.201252e+01 2.258270e+00 1.804016e-02 8.692569e-01
+2014 1.391547e+00 4.162917e+00 4.433998e+00 5.135435e+00
+2015 3.983541e+00 6.803558e+00 2.596831e+00 5.604071e-01
+2016 2.177905e+00 2.595862e+00 4.296525e-04 2.800670e-01
+2017 4.430307e+00 2.516030e+00 7.316778e-01 4.298737e+00
+2018 1.929954e-01 3.227830e+00 1.354031e+00 1.673797e-01
+2019 5.138314e+00                                       
+> sum(m)
+[1] 9081.248
+> sum(e^2)
+[1] 74892.94
+> sum(e^2) / 70
+[1] 1069.899
+> fit
+
+Call:
+tslm(formula = y ~ trend + I(trend^2) + I(trend^3) + I(trend^4))
+
+Coefficients:
+(Intercept)        trend   I(trend^2)   I(trend^3)   I(trend^4)  
+  6.907e+02    4.831e+01   -2.453e+00    4.997e-02   -3.104e-04  
+
+> summary(fit)
+
+Call:
+tslm(formula = y ~ trend + I(trend^2) + I(trend^3) + I(trend^4))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-76.340 -18.829   0.159  14.596  90.173 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  6.907e+02  2.252e+01  30.674  < 2e-16 ***
+trend        4.831e+01  4.389e+00  11.007  < 2e-16 ***
+I(trend^2)  -2.453e+00  2.524e-01  -9.717 3.22e-14 ***
+I(trend^3)   4.997e-02  5.399e-03   9.255 2.04e-13 ***
+I(trend^4)  -3.104e-04  3.827e-05  -8.111 2.05e-11 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 34.21 on 64 degrees of freedom
+Multiple R-squared:  0.9827,	Adjusted R-squared:  0.9816 
+F-statistic: 906.4 on 4 and 64 DF,  p-value: < 2.2e-16
+
+> 6.907e+02
+[1] 690.7
+> 
+> 6.907e+02 
+[1] 690.7
+> 4.831e+01
+[1] 48.31
+> -2.453e+00
+[1] -2.453
+> 4.997e-02 
+[1] 0.04997
+> -3.104e-04
+[1] -0.0003104
+> fit2
+
+Call:
+lm(formula = y ~ poly(t, 4, raw = T))
+
+Coefficients:
+         (Intercept)  poly(t, 4, raw = T)1  poly(t, 4, raw = T)2  poly(t, 4, raw = T)3  
+           6.907e+02             4.831e+01            -2.453e+00             4.997e-02  
+poly(t, 4, raw = T)4  
+          -3.104e-04  
+
+> summary(fit2)
+
+Call:
+lm(formula = y ~ poly(t, 4, raw = T))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-76.340 -18.829   0.159  14.596  90.173 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(>|t|)    
+(Intercept)           6.907e+02  2.252e+01  30.674  < 2e-16 ***
+poly(t, 4, raw = T)1  4.831e+01  4.389e+00  11.007  < 2e-16 ***
+poly(t, 4, raw = T)2 -2.453e+00  2.524e-01  -9.717 3.22e-14 ***
+poly(t, 4, raw = T)3  4.997e-02  5.399e-03   9.255 2.04e-13 ***
+poly(t, 4, raw = T)4 -3.104e-04  3.827e-05  -8.111 2.05e-11 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 34.21 on 64 degrees of freedom
+Multiple R-squared:  0.9827,	Adjusted R-squared:  0.9816 
+F-statistic: 906.4 on 4 and 64 DF,  p-value: < 2.2e-16
+
+> 6.907e+02 
+[1] 690.7
+> fit = tslm(y ~ trend+I(trend^2)+I(trend^3)+I(trend^4))
+> sexp2
+Holt-Winters exponential smoothing with trend and without seasonal component.
+
+Call:
+HoltWinters(x = y, beta = TRUE, gamma = FALSE)
+
+Smoothing parameters:
+ alpha: 0.6617721
+ beta : TRUE
+ gamma: FALSE
+
+Coefficients:
+          [,1]
+a 1710.1575286
+b   -0.3277692
+> fit3 = tslm(sexp3 ~ trend+I(trend^2)+I(trend^3)+I(trend^4))
+Error in tslm(sexp3 ~ trend + I(trend^2) + I(trend^3) + I(trend^4)) : 
+  Not time series data, use lm()
+> fit3 = lm(sexp3 ~ trend+I(trend^2)+I(trend^3)+I(trend^4))
+Error in eval(predvars, data, env) : object 'trend' not found
+> fit3 = tslm(y ~ trend+I(trend^2)+I(trend^3)+I(trend^4))
+> fit3
+
+Call:
+tslm(formula = y ~ trend + I(trend^2) + I(trend^3) + I(trend^4))
+
+Coefficients:
+(Intercept)        trend   I(trend^2)   I(trend^3)   I(trend^4)  
+  6.907e+02    4.831e+01   -2.453e+00    4.997e-02   -3.104e-04  
+
+> accuracy(y, fit)
+Error in NextMethod(.Generic) : 
+  (list) object cannot be coerced to type 'double'
+In addition: Warning message:
+In `!=.default`(actual, predicted) :
+  longer object length is not a multiple of shorter object length
+> accuracy(1759.287, 1709.830)
+[1] 0
+> accuracy(1759.287, fit
++ 
++ )
+Error in mean(actual != predicted) : 
+  (list) object cannot be coerced to type 'double'
+> accuracy(1759.287, fit)
+Error in mean(actual != predicted) : 
+  (list) object cannot be coerced to type 'double'
+> a = 1759.287
+> RMSE(a, fit)
+Error in RMSE(a, fit) : could not find function "RMSE"
+> accuracy(f2, a)
+Error in mean(actual != predicted) : 
+  (list) object cannot be coerced to type 'double'
+> f = 1709.83
+> accuracy(f, a)
+[1] 0
+> sexp2f = forecast(sexp2,1)
+> sexp2f
+        Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+2019 Q2        1709.83 1681.454 1738.205 1666.433 1753.226
+> lm(formula = y ~ poly(t, 4, raw = T))
+
+Call:
+lm(formula = y ~ poly(t, 4, raw = T))
+
+Coefficients:
+         (Intercept)  poly(t, 4, raw = T)1  poly(t, 4, raw = T)2  poly(t, 4, raw = T)3  
+           6.907e+02             4.831e+01            -2.453e+00             4.997e-02  
+poly(t, 4, raw = T)4  
+          -3.104e-04  
+
+> m2 = lm(formula = y ~ poly(t, 4, raw = T))
+> m2
+
+Call:
+lm(formula = y ~ poly(t, 4, raw = T))
+
+Coefficients:
+         (Intercept)  poly(t, 4, raw = T)1  poly(t, 4, raw = T)2  poly(t, 4, raw = T)3  
+           6.907e+02             4.831e+01            -2.453e+00             4.997e-02  
+poly(t, 4, raw = T)4  
+          -3.104e-04  
+
+> m2f = forecast(fit,)fitfit
+Error: unexpected symbol in "m2f = forecast(fit,)fitfit"
+> fit
+
+Call:
+tslm(formula = y ~ trend + I(trend^2) + I(trend^3) + I(trend^4))
+
+Coefficients:
+(Intercept)        trend   I(trend^2)   I(trend^3)   I(trend^4)  
+  6.907e+02    4.831e+01   -2.453e+00    4.997e-02   -3.104e-04  
+
+> fitf = forecast(fit,h=1)
+> fitf
+        Point Forecast  Lo 80    Hi 80    Lo 95    Hi 95
+2019 Q2       1739.734 1686.7 1792.767 1657.917 1821.551
+> m2
+
+Call:
+lm(formula = y ~ poly(t, 4, raw = T))
+
+Coefficients:
+         (Intercept)  poly(t, 4, raw = T)1  poly(t, 4, raw = T)2  poly(t, 4, raw = T)3  
+           6.907e+02             4.831e+01            -2.453e+00             4.997e-02  
+poly(t, 4, raw = T)4  
+          -3.104e-04  
+
+> m2f
+Error: object 'm2f' not found
+> m2f = forecast(spex3, h=1)
+Error in forecast(spex3, h = 1) : object 'spex3' not found
+> m2f = forecast(sexp3, h=1)
+> m2f
+        Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+2019 Q2       1718.651 1675.932 1761.371 1653.318 1783.985
+> m2f = forecast(sexp2, h=1)
+> m2f
+        Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+2019 Q2        1709.83 1681.454 1738.205 1666.433 1753.226
+> accuracy(sexp2, m2f)
+Error in actual != predicted : 
+  comparison of these types is not implemented
+In addition: Warning message:
+In actual != predicted :
+  longer object length is not a multiple of shorter object length
+> summary(sexp3)
+             Length Class  Mode     
+fitted       260    mts    numeric  
+x             69    ts     numeric  
+alpha          1    -none- numeric  
+beta           1    -none- logical  
+gamma          1    -none- logical  
+coefficients   6    -none- numeric  
+seasonal       1    -none- character
+SSE            1    -none- numeric  
+call           4    -none- call     
+> summary(y)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  806.1   988.7  1079.3  1168.9  1343.3  1706.3 
+> summary(fit)
+
+Call:
+tslm(formula = y ~ trend + I(trend^2) + I(trend^3) + I(trend^4))
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-76.340 -18.829   0.159  14.596  90.173 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  6.907e+02  2.252e+01  30.674  < 2e-16 ***
+trend        4.831e+01  4.389e+00  11.007  < 2e-16 ***
+I(trend^2)  -2.453e+00  2.524e-01  -9.717 3.22e-14 ***
+I(trend^3)   4.997e-02  5.399e-03   9.255 2.04e-13 ***
+I(trend^4)  -3.104e-04  3.827e-05  -8.111 2.05e-11 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 34.21 on 64 degrees of freedom
+Multiple R-squared:  0.9827,	Adjusted R-squared:  0.9816 
+F-statistic: 906.4 on 4 and 64 DF,  p-value: < 2.2e-16
+
+> summary(sexp2)
+             Length Class  Mode     
+fitted       201    mts    numeric  
+x             69    ts     numeric  
+alpha          1    -none- numeric  
+beta           1    -none- logical  
+gamma          1    -none- logical  
+coefficients   2    -none- numeric  
+seasonal       1    -none- character
+SSE            1    -none- numeric  
+call           4    -none- call     
+> plot(sexp2)
+> install.packages('Metrics')
+trying URL 'https://cran.cnr.berkeley.edu/bin/macosx/el-capitan/contrib/3.5/Metrics_0.1.4.tgz'
+Content type 'application/x-gzip' length 79310 bytes (77 KB)
+==================================================
+downloaded 77 KB
+
+
+The downloaded binary packages are in
+	/var/folders/qx/421n4v5n7g755cnkttvcylmh0000gn/T//RtmpCqu9p0/downloaded_packages
+> library(Metrics)
+> a = c(1,2,3,4,4,5)
+> b = c(2,3,4,5,5,6)
+> rmse(a,b)
+[1] 1
+> b = c(2,3,4,5,5,6,5,32,1)
+> a = c(1,2,3,4,4,5,35,6,7)
+> rmse(a,b)
+[1] 13.40812
+> analysis(fit)
+Error in analysis(fit) : could not find function "analysis"
+> Analysis(fit)
+Error in Analysis(fit) : could not find function "Analysis"
+> analysis(fit)
+Error in analysis(fit) : could not find function "analysis"
+> rmse(1759.287, 1739.734)
+[1] 19.553
+> rmse(1759.287, 1709.83)
+[1] 49.457
+> (1759.287 - 1709.83)
+[1] 49.457
+> test
+Error: object 'test' not found
+> > y = ts(PCD$PCDGCC96, start=c(2002,1), end=c(2019,1), frequency = 4)
+Error: unexpected '>' in ">"
+> rmse(fit$PCD, forecast(fit))
+Error in actual - predicted : non-numeric argument to binary operator
+> rmse(1,2)
+[1] 1
+> rmse(1,3)
+[1] 2
+> accuracy(fit)
+Error in ce(actual, predicted) : 
+  argument "predicted" is missing, with no default
+> accuracy(fit, forecast(fit))
+Error in actual != predicted : 
+  comparison of these types is not implemented
+In addition: Warning message:
+In actual != predicted :
+  longer object length is not a multiple of shorter object length
+> accuracy(m2, m2f)
+Error in actual != predicted : 
+  comparison of these types is not implemented
+In addition: Warning message:
+In actual != predicted :
+  longer object length is not a multiple of shorter object length
+> accuracy(sexp2, m2f))
+Error: unexpected ')' in "accuracy(sexp2, m2f))"
+> accuracy(sexp2, m2f)
+Error in actual != predicted : 
+  comparison of these types is not implemented
+In addition: Warning message:
+In actual != predicted :
+  longer object length is not a multiple of shorter object length
+> e
+            Qtr1        Qtr2        Qtr3        Qtr4
+2002  69.4530574  33.2134302  20.5601895 -19.9988539
+2003 -48.4054387 -36.4398525 -20.5379325 -26.9070649
+2004 -27.5761852 -39.3197782 -27.0668779 -18.7540675
+2005 -22.0874794  -2.2807954  12.5347535 -21.9386128
+2006  15.0837762  13.7900419  27.6467564  42.0449425
+2007  56.3520738  67.9080747  81.6003202  90.1726364
+2008  54.2632999  46.4630380   9.8320290 -67.3440983
+2009 -67.1862641 -76.3399381 -32.9251389 -60.2424346
+2010 -52.8959424 -27.2633290 -17.7408100   3.7248496
+2011   4.4503356 -12.8202156 -14.1412166  -0.2666293
+2012  13.6340350   1.6037159   1.0188038  10.6541397
+2013  23.2500156  10.1921739   0.9208082  -6.4594375
+2014  -8.2574683  14.4272615  15.0377483  16.3414392
+2015  14.5302323  19.1674762  11.9509703  -5.6020350
+2016 -11.1418390 -12.2702897   0.1592153  -4.0992708
+2017 -16.4392440 -12.4897493  -6.7893814  16.5867161
+2018   3.5418502  14.5957788   9.5247104  -3.3736956
+2019 -18.8293291                                    
+> sum(e)
+[1] -2.446932e-13
+> sum(e) /70
+[1] -3.495616e-15
+> rmse(e)
+Error in mse(actual, predicted) : 
+  argument "predicted" is missing, with no default
+> rmse(ts.PCDGCC96$residuals)
+Error in se(actual, predicted) : object 'ts.PCDGCC96' not found
+> rmse(ts.PCD$residuals)
+Error in se(actual, predicted) : object 'ts.PCD' not found
+> rmse(ts.y$residuals)
+Error in se(actual, predicted) : object 'ts.y' not found
+> rmse(fit$residuals)
+Error in mse(actual, predicted) : 
+  argument "predicted" is missing, with no default
+> rmse(sexp2$residuals)
+Error in mse(actual, predicted) : 
+  argument "predicted" is missing, with no default
+> rmse(sexp2$residuals,m2f)
+Error in actual - predicted : non-numeric argument to binary operator
+> sexp2
+Holt-Winters exponential smoothing with trend and without seasonal component.
+
+Call:
+HoltWinters(x = y, beta = TRUE, gamma = FALSE)
+
+Smoothing parameters:
+ alpha: 0.6617721
+ beta : TRUE
+ gamma: FALSE
+
+Coefficients:
+          [,1]
+a 1710.1575286
+b   -0.3277692
+> summary(sexp)
+Error in summary(sexp) : object 'sexp' not found
+> summary(sexp2)
+             Length Class  Mode     
+fitted       201    mts    numeric  
+x             69    ts     numeric  
+alpha          1    -none- numeric  
+beta           1    -none- logical  
+gamma          1    -none- logical  
+coefficients   2    -none- numeric  
+seasonal       1    -none- character
+SSE            1    -none- numeric  
+call           4    -none- call     
+> analysis(sexp2)
+Error in analysis(sexp2) : could not find function "analysis"
+> accuracy(sexp2)
+Error in ce(actual, predicted) : 
+  argument "predicted" is missing, with no default
+> rmse(ts.fit$residual)
+Error in se(actual, predicted) : object 'ts.fit' not found
+> rmse(e$residual)
+Error in e$residual : $ operator is invalid for atomic vectors
+> rmse(e$residual, mf2)
+Error in e$residual : $ operator is invalid for atomic vectors
+> e
+            Qtr1        Qtr2        Qtr3        Qtr4
+2002  69.4530574  33.2134302  20.5601895 -19.9988539
+2003 -48.4054387 -36.4398525 -20.5379325 -26.9070649
+2004 -27.5761852 -39.3197782 -27.0668779 -18.7540675
+2005 -22.0874794  -2.2807954  12.5347535 -21.9386128
+2006  15.0837762  13.7900419  27.6467564  42.0449425
+2007  56.3520738  67.9080747  81.6003202  90.1726364
+2008  54.2632999  46.4630380   9.8320290 -67.3440983
+2009 -67.1862641 -76.3399381 -32.9251389 -60.2424346
+2010 -52.8959424 -27.2633290 -17.7408100   3.7248496
+2011   4.4503356 -12.8202156 -14.1412166  -0.2666293
+2012  13.6340350   1.6037159   1.0188038  10.6541397
+2013  23.2500156  10.1921739   0.9208082  -6.4594375
+2014  -8.2574683  14.4272615  15.0377483  16.3414392
+2015  14.5302323  19.1674762  11.9509703  -5.6020350
+2016 -11.1418390 -12.2702897   0.1592153  -4.0992708
+2017 -16.4392440 -12.4897493  -6.7893814  16.5867161
+2018   3.5418502  14.5957788   9.5247104  -3.3736956
+2019 -18.8293291                                    
+> es = e^2
+> es / 70
+             Qtr1         Qtr2         Qtr3         Qtr4
+2002 6.891039e+01 1.575903e+01 6.038877e+00 5.713631e+00
+2003 3.347266e+01 1.896947e+01 6.025810e+00 1.034272e+01
+2004 1.086351e+01 2.208636e+01 1.046594e+01 5.024501e+00
+2005 6.969382e+00 7.431468e-02 2.244572e+00 6.875753e+00
+2006 3.250290e+00 2.716647e+00 1.091919e+01 2.525396e+01
+2007 4.536509e+01 6.587867e+01 9.512303e+01 1.161586e+02
+2008 4.206437e+01 3.084020e+01 1.380983e+00 6.478897e+01
+2009 6.448563e+01 8.325409e+01 1.548664e+01 5.184501e+01
+2010 3.997115e+01 1.061842e+01 4.496233e+00 1.982072e-01
+2011 2.829355e-01 2.347970e+00 2.856772e+00 1.015588e-03
+2012 2.655527e+00 3.674150e-02 1.482802e-02 1.621581e+00
+2013 7.722332e+00 1.484006e+00 1.211268e-02 5.960619e-01
+2014 9.740826e-01 2.973512e+00 3.230484e+00 3.814895e+00
+2015 3.016109e+00 5.248459e+00 2.040367e+00 4.483257e-01
+2016 1.773437e+00 2.150857e+00 3.621357e-04 2.400574e-01
+2017 3.860696e+00 2.228483e+00 6.585100e-01 3.930274e+00
+2018 1.792100e-01 3.043382e+00 1.296002e+00 1.625975e-01
+2019 5.064909e+00                                       
+>  m = es / 70
+> sum(m)
+[1] 1069.899
+> kable(summary(fit)$coefficient)
+
+
+|            |    Estimate| Std. Error|   t value| Pr(>&#124;t&#124;)|
+|:-----------|-----------:|----------:|---------:|------------------:|
+|(Intercept) | 690.7492887| 22.5191354| 30.673881|                  0|
+|trend       |  48.3117432|  4.3892815| 11.006754|                  0|
+|I(trend^2)  |  -2.4527483|  0.2524067| -9.717444|                  0|
+|I(trend^3)  |   0.0499694|  0.0053993|  9.254749|                  0|
+|I(trend^4)  |  -0.0003104|  0.0000383| -8.111301|                  0|
+> kable(summary(sexp2)$coefficient)
+Error in summary(sexp2)$coefficient : 
+  $ operator is invalid for atomic vectors
+> analysis(fit)
+Error in analysis(fit) : could not find function "analysis"
+> analysis(sexp2)
+Error in analysis(sexp2) : could not find function "analysis"
+> 
